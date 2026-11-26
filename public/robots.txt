@@ -1,0 +1,7 @@
+User-agent: *
+Disallow:
+Sitemap: https://www.compackage.com/sitemap.xml
+
+Disallow: *?query=*
+Disallow: *?fbclid=*`
+Disallow: *?fullweb=1

@@ -1,0 +1,24 @@
+User-agent: *
+
+@if ( ! $disallowAll )
+  Disallow: /admin/*
+@endif
+
+@if ( $allowSpecificPage && $specificPageUrl === 'https://www.compackage.com/terms-conditions?fullweb=1' )
+  Allow: /terms-conditions?fullweb=1
+@endif
+@if ( $allowSpecificPage && $specificPageUrl === 'https://www.compackage.com/sitemap?fullweb=1' )
+  Allow: /sitemap?fullweb=1
+@endif
+@if ( $allowSpecificPage && $specificPageUrl === 'https://www.compackage.com/contactus?fullweb=1' )
+  Allow: /contactus?fullweb=1
+@endif
+@if ( $allowSpecificPage && $specificPageUrl === 'https://www.compackage.com/login?fullweb=1' )
+  Allow: /login?fullweb=1
+@endif
+@if ( $allowSpecificPage && $specificPageUrl === 'https://www.compackage.com/referafriend?fullweb=1' )
+  Allow: /referafriend?fullweb=1
+@endif
+@if ( $allowSpecificPage && $specificPageUrl === 'https://www.compackage.com/sitemap.asp?fullweb=1' )
+  Disallow: /sitemap.asp?fullweb=1
+@endif

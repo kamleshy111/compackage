@@ -1,0 +1,241 @@
+<template>
+<div>
+
+<div class="w-full flex items-center justify-start mt-4 mb-8">
+        <a :href="url + '/webapp/users'" class="mr-3 rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-sm">Add New User</a>
+        <a href="#" class="rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-sm">Directions</a>
+    </div>
+
+    <div class="row flex flex-wrap -mx-3.5">
+        <div class="w-full md:w-1/3 px-3.5">
+            <select name="users-list" v-on:change="selectUser" v-model="selected_user" size="5" class="focus:border-lbrwnclr outline-0 border border-neutral-400 px-2.5 rounded bg-neutral-100 w-full mb-3 form-control">
+                <option v-for="user in users" :value="user.id">{{user.name}}</option>
+            </select>
+
+            <div class="flex justify-end">
+                <button type="submit" v-if="selected_user != 0" v-on:click="deleteSelectedUser" class="mr-3 outline-none cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-sm">Delete Selected User</button>
+            </div>
+        </div>
+        <div class="w-full md:w-2/3 pr-3.5 pl-3.5 lg:pl-10">
+            <form class="register " action="" method="post" enctype="multipart/form-data" v-on:submit="createUser">
+                <div class="flex flex-wrap -mx-3.5 mb-3">
+                    <div class="lg:w-1/2 w-full px-3.5 mb-3 lg:mb-0">
+                        <label for="firstname" class="mb-1">First Name<span class="text-red-600 ml-1">*</span></label> 
+                        <input type="text" required id="firstname" name="firstname" placeholder="First Name" v-model="user.firstname" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
+                    </div>
+                    <div class="lg:w-1/2 w-full px-3.5">
+                        <label for="lastname" class="mb-1">Last Name<span class="text-red-600 ml-1">*</span></label>
+                        <input type="text" required id="lastname" name="lastname" placeholder="Last Name" v-model="user.lastname" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-3.5 mb-3">
+                    <div class="lg:w-1/2 w-full px-3.5 mb-3 lg:mb-0">
+                        <label for="email" class="mb-1">E-mail Address<span class="text-red-600 ml-1">*</span></label>
+                        <input type="email" required id="email" name="email" placeholder="E-mail Address" v-model="user.email" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
+                    </div>
+                    <div class="lg:w-1/2 w-full px-3.5">
+                        <label for="username" class="mb-1">Username<span class="text-red-600 ml-1">*</span></label>
+                        <input type="text" required id="username" name="username" placeholder="Username" v-model="user.username" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-3.5 mb-3">
+                    <div class=" w-full px-3.5 mb-3 lg:mb-0">
+                        <div class="flex justify-end">
+                            <!-- <div>
+                                <label for="status" class="mb-1">Active</label>
+                                <input type="checkbox" value="1" id="status" name="status" v-model="user.status" />
+                            </div> -->
+                            <div>
+                                <label for="meta_amount_invested_in_business_till_date">Last Login</label><span>12:00:00 AM(static)</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="lg:w-1/2 w-full px-3.5 flex">
+                        <label class="mr-3">Permissions<span class="text-red-600 ml-1">*</span></label>
+                        <div class="mr-3">
+                            <input type="radio" required value="admin" class="" name="permission_type" v-model="user.permission_type" />
+                            <label for="permission_type" class="mb-1">Administrator</label>
+                        </div>    
+                        <div>
+                            <input type="radio" required value="user" class="" name="permission_type" v-model="user.permission_type" />
+                            <label for="permission_type" class="mb-1">User</label>
+                        </div>
+                    </div> -->
+                </div>
+                <div class="w-full mb-3 lg:mb-0">
+                    <label for="companies" class="mb-1">Companies Access<span class="text-red-600 ml-1">*</span></label>
+
+                    <div v-for="company in companies">
+                        <input type="checkbox" required :value="company.id" name="companies[]" v-model="user.companies" />
+                        <label for="permission_type" class="mb-1">{{company.name}}</label>
+                    </div>
+                </div>
+                
+                
+
+                <div class="mt-5 w-full mb-3 lg:mb-0">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Company Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Status(Active)
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Permissions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="company in companies" class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap" data-label="Serial">
+                                    <input type="checkbox" required :value="company.id" name="companies[]" v-model="$data[user.selected_companies[company.id] ? user.selected_companies[company.id].id : '']" />
+                                    <label for="permission_type" class="mb-1">{{company.name}}</label>
+                                </th>
+                                <td data-label="Title" class="px-6 py-4">
+                                    <div class="flex justify-between">
+                                        <input type="checkbox" value="1" id="status" name="status" v-model="company.status" />
+                                    </div>
+                                </td>
+                                <td data-label="Title" class="px-6 py-4">
+                                    {{user.selected_companies[company.id] ? user.selected_companies[company.id] : 'test'}}
+                                    <div class="mr-3">
+                                        <input type="radio" required value="admin" class="" name="permission_type" v-model="$data[user.selected_companies[company.id] ? user.selected_companies[company.id].permission_type : '']" />
+                                        <label for="permission_type" class="mb-1">Administrator</label>
+                                        <input type="radio" required value="user" class="" name="permission_type" v-model="test" />
+                                        <label for="permission_type" class="mb-1">User</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- <div class="mt-5 w-full mb-3 lg:mb-0" v-if="selected_user != 0">
+                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Company Name
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Status(Active)
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Permissions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="company in user.selected_companies" class="border-b dark:bg-gray-800 dark:border-gray-700 odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700">
+                                <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap" data-label="Serial">
+                                    {{company.name}}
+                                </th>
+                                <td data-label="Title" class="px-6 py-4">
+                                    <div class="flex justify-between">
+                                        <input type="checkbox" value="1" id="status" name="status" v-model="company.status" />
+                                    </div>
+                                </td>
+                                <td data-label="Title" class="px-6 py-4">
+                                    
+                                    <div class="mr-3">
+                                        <input type="radio" required value="admin" class="" name="permission_type" v-model="company.permission_type" />
+                                        <label for="permission_type" class="mb-1">Administrator</label>
+                                        <input type="radio" required value="user" class="" name="permission_type" v-model="company.permission_type" />
+                                        <label for="permission_type" class="mb-1">User</label>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+
+                <div class="flex justify-end mt-5">
+                    <button type="submit" v-if="selected_user != 0" class="mr-3 outline-none cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-sm">Reset Password</button>
+                    <button type="submit" v-if="selected_user != 0" class="mr-3 outline-none cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-sm">Preview Email</button>
+                    <button type="submit" v-if="selected_user != 0" class="mr-3 outline-none cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-sm">Send User Information</button>
+                    <button type="submit" class="outline-none cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-sm">{{ (selected_user == 0) ? 'Create User' : 'Update User' }}</button>
+                </div>    
+            </form>
+        </div>
+        <!-- Loader -->
+        <div class="mxi-loader-wrap backdrop-blur-sm fixed w-full h-full top-0 left-0" v-show="viewLoader">
+            <img src="https://mxi9.youngattitude.in/public/images/loader.gif" alt=""
+                class="loader-img top-[50%] right-[50%] absolute -translate-y-[50%] -translate-x-[50%]">
+        </div>
+    </div>
+</div>
+</template>
+<script>
+export default {
+    props:['companies', 'users'],
+    data() {
+        return {
+            test: 'admin',
+            selected_user: 0,
+            user: {
+                firstname: "",
+                lastname: "",
+                email: "",
+                username: "",
+                status: "",
+                lastlogin: "",
+                companies: [],
+                selected_companies: [],
+                permission_type: ""
+            },
+            viewLoader: false,
+            url: process.env.MIX_API_URL,
+        };
+    },
+    created() {
+    },
+    methods: {
+        createUser(e) {
+            e.preventDefault();
+            this.viewLoader = true;
+            let app = this;
+
+            if( app.selected_user > 0 ) {
+                app.user.id = app.selected_user;
+            }
+
+            axios.post(app.url + '/api/users/create', app.user).then(function (response) {
+                if (response.data.success) {
+                    showSuccessMessage(response.data.data.msg);
+                    location.reload();
+                } else {
+                    showErrorMessage(response.data.data.msg);
+                }
+                app.viewLoader = false;
+            }).catch((err) => {
+                showErrorMessage(err.response.data.message);
+                app.viewLoader = false;
+            });
+        },
+        selectUser() {
+            let app = this;
+
+            this.viewLoader = true;
+
+            axios.post(app.url + '/api/users/' + app.selected_user).then((response) => {
+                if(response.data.success) {
+                    app.user = response.data.data;
+                }
+                app.viewLoader = false;
+            }).catch((error) => {
+                showErrorMessage(error);
+                app.viewLoader = false;
+            });
+        },
+        deleteSelectedUser() {
+            showErrorMessage("Under Development");
+        },
+        selectCompaniesOfUser() {
+            
+        }
+    },
+};
+</script>
