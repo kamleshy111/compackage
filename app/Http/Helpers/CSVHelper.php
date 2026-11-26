@@ -61,7 +61,7 @@ class CSVHelper extends Controller {
             rewind($handle);
         }
 
-        while (($row_data = fgetcsv($handle, 2000, ",")) !== FALSE) {
+        while (($row_data = fgetcsv($handle)) !== FALSE) {
             // Grab headings.
             if ($row == 0) {
                 $headings = $row_data;
@@ -77,6 +77,11 @@ class CSVHelper extends Controller {
             // Skip empty rows if first three columns does not have the data
             if( empty( $row_data[0] ) && empty( $row_data[1] ) && empty( $row_data[2] ) ) {
                 continue;
+            }
+
+            //dd($headings);
+            if (count($headings) > count($row_data)) {
+                $row_data = array_pad($row_data, count($headings), null);
             }
 
             $rows[] = (object) array_combine($headings, $row_data);

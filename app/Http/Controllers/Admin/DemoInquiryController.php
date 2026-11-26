@@ -147,10 +147,14 @@ class DemoInquiryController extends Controller
         ];
         
         try {
-            $demo_inquiry = DemoInquiry::where('email', $request->email)->first();
-            if( ! empty( $demo_inquiry ) ) {
-                $demo_inquiry->count += 1;
-                $demo_inquiry->save();
+            if( !empty($request->email) ){
+                $demo_inquiry = DemoInquiry::where('email', $request->email)->first();
+                if( ! empty( $demo_inquiry ) ) {
+                    $demo_inquiry->count += 1;
+                    $demo_inquiry->save();
+                } else {
+                    DemoInquiry::create($args);
+                }
             } else {
                 DemoInquiry::create($args);
             }
@@ -163,11 +167,16 @@ class DemoInquiryController extends Controller
             $args['date_submitted_mail'] = $amNY->format('F d, Y') . ' at ' . $amNY->format('h:i:s A') . ' EDT'; // date("m/d/Y h:i:s A");
             
             # Admin notification
-            Mail::to($demo)->cc([$admin])->send(new DemoInquiryMail($args));
+            $ccRecipients = [$admin];
+            if ($request->signupreferencefrom === 'Gushwork') {
+                $ccRecipients[] = 'sarvesh.shetty@gushwork.ai';
+            }
+            Mail::to($demo)->cc($ccRecipients)->send(new DemoInquiryMail($args));
 
             # Customer notification
-            Mail::to($request->email)->send(new \App\Mail\DemoInquiryCustomerNotification());
-
+            if( !empty($request->email) ){
+                Mail::to($request->email)->send(new \App\Mail\DemoInquiryCustomerNotification());
+            }
             // Mail::to($request->email)->send(new DemoInquiryMail($args));
 
             return send_success(["msg" => "Demo request submitted"]);

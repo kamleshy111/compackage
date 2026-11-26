@@ -1,29 +1,29 @@
 <template>
+<!-- Date: 26-Sep-2025 According to Bill's new comments, we need to remove the required fields from the form. But the VUE JS code was giving error. So we commented it and redirect to success page. -->
     <div>
-        <span class="block mb-3 text-red-600 text-xs">Required Fields</span>
         <form v-on:submit="demoFormSubmit">
             <div class="flex flex-wrap -mx-2 mb-3">
                 <div class="lg:w-1/2 w-full px-2 mb-3 lg:mb-0">
-                    <label for="firstname" class="mb-1">First Name <span class="text-red-600">*</span></label>
+                    <label for="firstname" class="mb-1">First Name</label>
                     <input type="text" required name="firstname" v-model="demoForm.firstname"
                         class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control">
                 </div>
                 <div class="lg:w-1/2 w-full px-2">
-                    <label for="lastname" class="mb-1">Last Name <span class="text-red-600">*</span></label>
+                    <label for="lastname" class="mb-1">Last Name</label>
                     <input type="text" required name="lastname" v-model="demoForm.lastname"
                         class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-2 mb-3">
                 <div class="lg:w-1/2 w-full px-2 mb-3 lg:mb-0">
-                    <label for="Email" class="mb-1">Email <span class="text-red-600">*</span></label>
+                    <label for="Email" class="mb-1">Email</label>
                     <input type="text" required name="email" v-model="demoForm.email"
                         class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control">
                 </div>
                 <div class="lg:w-1/2 w-full px-2">
                     <div class="flex flex-wrap">
                         <div class="w-4/6">
-                            <label for="Phone" class="mb-1">Phone <span class="text-red-600">*</span></label>
+                            <label for="Phone" class="mb-1">Phone</label>
                             <input type="text" required name="phone" v-model="demoForm.phone" @input="acceptNumber"
                                 class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control">
                         </div>
@@ -37,17 +37,17 @@
             </div>
             <div class="flex flex-wrap -mx-2 mb-3">
                 <div class="lg:w-1/3 w-full px-2">
-                    <label for="State/Province" class="mb-1">State/Province <span class="text-red-600">*</span></label>
+                    <label for="State/Province" class="mb-1">State/Province</label>
                     <input type="text" required name="state" v-model="demoForm.state"
                         class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control">
                 </div>
                 <div class="lg:w-1/3 w-full px-2 mb-3 lg:mb-0">
-                    <label for="Company" class="mb-1">Company <span class="text-red-600">*</span></label>
+                    <label for="Company" class="mb-1">Company</label>
                     <input type="text" required name="company" v-model="demoForm.company"
                         class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control">
                 </div>
                 <div class="lg:w-1/3 w-full px-2">
-                    <label for="Number of num_employees" class="mb-1"># of Employees <span class="text-red-600">*</span></label>
+                    <label for="Number of num_employees" class="mb-1"># of Employees</label>
                     <input type="number" required name="num_employees" v-model="demoForm.num_employees"
                         class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control">
                 </div>
@@ -59,6 +59,8 @@
                         <option value="">Select</option>
                         <option value="Web Search">Web Search</option>
                         <option value="Email">Email</option>
+                        <option value="LinkedIn">LinkedIn</option>
+                        <option value="YouTube">YouTube</option>
                         <option value="Organization/Association">Organization/Association</option>
                         <option value="University">University</option>
                         <option value="Referred by a Past or Current Customer">Referred by a Past or Current Customer</option>
@@ -98,11 +100,11 @@
                 <input type="checkbox" required name="are_you_human" id="are_you_human" value="yes" v-model="demoForm.are_you_human" />
                 <label for="are_you_human">I am a human</label>
             </div>
-            <div class="w-full mb-3 space-x-3">
+            <!--<div class="w-full mb-3 space-x-3">
                 <input type="checkbox" name="subscribe" id="subscribe" value="yes"
                     v-model="demoForm.subscribe" />
                 <label for="subscribe">Subscribe to COMPackage News</label>
-            </div>
+            </div> -->
             <div class="w-full flex flex-wrap items-center justify-start">
                 <input type="submit" name="Submit" value="View Demo"
                     class="transition ease-in-out delay-150 outline-none cursor-pointer mr-3 rounded-lg md:px-5 lg:px-9 px-9 md:py-1.5 py-2.5 leading-4 text-center hover:opacity-90 gradient-brown text-white font-sans font-bold md:text-sm lg:text-lg text-lg">
@@ -154,11 +156,15 @@ export default {
                     location.href = app.redirect_url;
                     // setTimeout(() => location.reload(), 4000);
                 } else {
+                    //Date: 26-Sep-2025 According to Bill's new comments, we need to remove the required fields from the form. But the VUE JS code was giving error. So we commented it and redirect to success page.
                     jQuery('input[name=' + response.data.data.key + ']').addClass('border-2 border-rose-600');
                     showErrorMessage(response.data.data.msg);
+                    //location.href = app.redirect_url;
                 }
             }).catch((error) => {
+                //Date: 26-Sep-2025 According to Bill's new comments, we need to remove the required fields from the form. But the VUE JS code was giving error. So we commented it and redirect to success page.
                 showErrorMessage(error.response.data.message)
+                //location.href = app.redirect_url;
             });
         }
     }

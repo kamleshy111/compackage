@@ -2,8 +2,8 @@
 <div class="hidden relative" id="mobile-menu">
   <div class="mobtopmenu">
     <ul class="w-full text-center">
-      <li v-for="fullMenu in topMenu" class="border-b-[#fff] border-b bg-greendarkclr items-center relative">
-        <a :href="fullMenu.url" v-if="!fullMenu.children" class="text-white h-full h-full text-white text-base md:text-sm lg:text-lg inline-block py-3 px-3 font-bold w-[6.7rem] lg:w-[9.5rem] lg:leading-[18px]">
+      <li v-for="fullMenu in topMenu" class="border-b-[#fff] border-b bg-greendarkclr items-center relative flex">
+        <a :href="fullMenu.url" v-if="!fullMenu.children" class="text-left text-white h-full h-full text-white text-base md:text-sm lg:text-lg inline-block py-3 px-3 font-bold w-full lg:w-[9.5rem] lg:leading-[18px]">
           <span class="self-center">{{ fullMenu.name }}</span>
         </a>
         <span class="flex flex-wrap h-full hover:text-white h-full text-white text-base md:text-sm lg:text-lg block py-3 px-3 font-bold lg:leading-[18px]" v-else><a :href="fullMenu.url" class="flex item-center">{{ fullMenu.name }}</a>
@@ -55,7 +55,37 @@
   <div class="mob-mainmenu">
     <ul class="w-full bg-white">
       <li v-for="item in items" class="leading-4">
-        <a :href="item.url" class="text-center inline-block py-3 px-3 font-sans text-white text-[16px] text-[#524242]"><span class="self-center">{{ item.name }}</span></a>
+        <!-- <a :href="item.url" class="text-center inline-block py-3 px-3 font-sans text-[16px] text-[#524242]"><span class="self-center">{{ item.name }}</span></a> -->
+        <a :href="item.url" v-if="!item.children" class="text-center inline-block py-3 px-3 font-sans text-[16px] text-[#524242]">
+          <span class="self-center">{{ item.name }}</span>
+        </a>
+        <span v-else class="flex flex-wrap relative cursor-pointer text-center inline-block py-3 px-3 lg:px-5 font-sans font-bold text-[#524242] text-[15px] hover:text-[#524242] hover:bg-graylightclr">
+          <a :href="item.url" class="flex items-center">{{ item.name }}</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute right-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" @click="item.open = !item.open">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m-6-6h12" />
+          </svg>
+          <div class="w-full bg-graylightclr pt-3.5" v-show="item.open" @mouseover="item.open = true" @mouseleave="item.open = false">
+            <ul v-for="child in item.children" :key="child.url" class="z-10 px-3.5 topsub-menu">
+              <li class="pb-2 mb-2">
+                <a v-if="!child.children" :href="child.url" :target="child.target" class="items-center flex font-sans font-bold text-[#524242] text-[15px]">
+                  <span class="ml-2.5">{{ child.name }}</span>
+                </a>
+                <span v-else class="relative" @click="child.open = !child.open">
+                  <a :href="child.url" class="items-center flex font-sans font-bold text-[#524242] text-[15px]">
+                    <span class="ml-2.5">{{ child.name }}</span>
+                  </a>
+                  <ul v-show="child.open" @mouseover="child.open = true" class="px-3.5 pt-3.5">
+                    <li v-for="sub in child.children" :key="sub.url" class="last:mb-0 text-left pb-1.5 mb-1.5">
+                      <a :href="sub.url" :target="sub.target" class="flex font-sans text-[#524242] text-[14px] text-left items-center">
+                        <span class="ml-2.5">{{ sub.name }}</span>
+                      </a>
+                    </li>
+                  </ul>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </span>
       </li>
     </ul>
     <div class="py-3 px-3">
@@ -176,11 +206,28 @@
           <div class="w-7/12 md:w-[54%] lg:w-1/2 px-4">
             <ul class="w-full justify-end flex items-center">
               <li v-for="item in items" class="leading-4">
-                <a :href="item.url" v-if="!item.children" :class="{'bg-graylightclr text-[#524242]' : currentLocation == item.url}" class="text-center inline-block py-3 px-3 lg:px-5 border-x border-r-lbrwnclr border-l-brwnclr font-sans font-bold text-white text-[15px] hover:text-[#524242] hover:bg-graylightclr"><span class="self-center">{{ item.name }}</span></a>
+                <a :href="item.url" v-if="!item.children" :class="{'bg-graylightclr text-[#524242]' : currentLocation == item.url, 'text-white': currentLocation != item.url}" class="text-center inline-block py-3 px-3 lg:px-5 border-x border-r-lbrwnclr border-l-brwnclr font-sans font-bold text-[15px] hover:text-[#524242] hover:bg-graylightclr"><span class="self-center">{{ item.name }}</span></a>
                 <span class="relative test cursor-pointer text-center inline-block py-3 px-3 lg:px-5 border-x border-r-lbrwnclr border-l-brwnclr font-sans font-bold text-white text-[15px] hover:text-[#524242] hover:bg-graylightclr" v-else v-on:mouseover="item.open = true" v-on:mouseleave="item.open = false"><a :href="item.url">{{ item.name }}</a>
                   <ul v-show="item.open"  v-on:mouseover="item.open = true" class="z-10 top-10 -left-10 p-3.5 w-96 border border-t-0 border-graybdclr sub-menu absolute bg-graylightclr">
-                    <li v-for="child in item.children" class="pb-1.5 mb-1.5 border-b-grayccc border border-t-0 border-l-0 border-r-0">
-                      <a :href="child.url" :target="child.target" class="items-center flex font-sans font-bold text-[#524242] text-[15px]"><img :src="url + child.img" :alt="child.name"><span class="ml-2.5">{{ child.name }}</span></a>
+                    <li v-for="child in item.children" :key="child.url" class="relative pb-1.5 mb-1.5 border-b border-grayccc">
+                      <a v-if="!child.children" :href="child.url" :target="child.target" class="items-center flex font-sans font-bold text-[#524242] text-[15px]">
+                        <img v-if="child.img" :src="url + child.img" :alt="child.name">
+                        <span class="ml-2.5">{{ child.name }}</span>
+                      </a>
+                      <span v-else class="relative" @mouseover="child.open = true" @mouseleave="child.open = false">
+                        <a :href="child.url" class="items-center flex font-sans font-bold text-[#524242] text-[15px]">
+                          <img v-if="child.img" :src="url + child.img" :alt="child.name">
+                          <span class="ml-2.5">{{ child.name }}</span>
+                        </a>
+                        <ul v-show="child.open" class="z-20 menu-green lg:top-0 md:top-[40px] lg:left-full md:left-0  p-3.5 w-[210px] topsub-menu absolute bg-white border">
+                          <li v-for="sub in child.children" :key="sub.url" class="mb-1.5">
+                            <a :href="sub.url" :target="sub.target" class="flex font-sans text-[#524242] text-[14px] text-left items-center">
+                              <img v-if="child.img" :src="url + child.img" :alt="child.name">
+                              <span class="ml-2.5">{{ sub.name }}</span>
+                            </a>
+                          </li>
+                        </ul>
+                      </span>
                     </li>
                   </ul>
                 </span>
@@ -237,56 +284,8 @@ export default {
           ]
         },
         {
-          url:'/employee-benefit-resources',
-          name:'Learn More',
-          open: false,
-          children:[
-            [
-              {
-                url:'/total-compensation-demo',
-                name:'View a Free Demo',
-              },
-              {
-                url:'/compensation-software/sample-total-compensation-report',
-                name:'View a Total Compensation Statement',
-              }
-            ],
-            [
-              {
-                url:'/compensation-software/compensation-statement-pricing',
-                name:'View Pricing',
-              },
-              {
-                url:'#',
-                name:'Practical uses of Employee Benefit Reports ▼',
-                open: false,
-                children:[
-                {
-                  url:'/employee-benefit-resources/employee-year-end-reports',
-                  name:'Year End Reports',
-                },
-                {
-                  url:'/employee-benefit-resources/employee-performance-reviews',
-                  name:'Employee Performance Reviews',
-                },
-                {
-                  url:'/employee-benefit-resources/employee-recruitment',
-                  name:'Employee Recruitment',
-                }
-                ]
-              }
-            ],
-            [
-              {
-                url:'/employee-benefit-resources/benefit-statement-glossary',
-                name:'Benefit Statement Glossary',
-              },
-              {
-                url:'/compensation-software/benefit-software-faq',
-                name:'FAQ',
-              }
-            ]
-          ]
+          url:'/compensation-software/compensation-statement-pricing',
+          name:'Pricing',
         },
         {
           url:'/why-compackage',
@@ -336,10 +335,67 @@ export default {
         }
       ],
       items: [
+        //{
+        //   url: '/',
+        //   name: 'Home'
+        //},
+
         {
-          url: '/',
-          name: 'Home'
+          url:'/employee-benefit-resources',
+          name:'Learn More',
+          open: false,
+          children:[
+              {
+                url:'/total-compensation-demo',
+                name:'View a Free Demo',
+                img: '/images/menu-compackage.png',
+              },
+              {
+                url:'/compensation-software/sample-total-compensation-report',
+                name:'View a Total Compensation Statement',
+                img: '/images/menu-compackage.png',
+              },
+              {
+                url:'/compensation-software/compensation-statement-pricing',
+                name:'View Pricing',
+                img: '/images/menu-compackage.png',
+              },
+              {
+                url:'#',
+                name:'Practical uses of Employee Benefit Reports ▶',
+                img: '/images/menu-compackage.png',
+                open: false,
+                children:[
+                  {
+                    url:'/employee-benefit-resources/employee-year-end-reports',
+                    name:'Year End Reports',
+                    img: '/images/menu-compackage.png',
+                  },
+                  {
+                    url:'/employee-benefit-resources/employee-performance-reviews',
+                    name:'Employee Performance Reviews',
+                    img: '/images/menu-compackage.png',
+                  },
+                  {
+                    url:'/employee-benefit-resources/employee-recruitment',
+                    name:'Employee Recruitment',
+                    img: '/images/menu-compackage.png',
+                  }
+                ]
+              },
+              {
+                url:'/employee-benefit-resources/benefit-statement-glossary',
+                name:'Benefit Statement Glossary',
+                img: '/images/menu-compackage.png',
+              },
+              {
+                url:'/compensation-software/benefit-software-faq',
+                name:'FAQ',
+                img: '/images/menu-compackage.png',
+              }
+            ]
         },
+
         {
           url: '/aboutus',
           name: 'About',
@@ -358,7 +414,7 @@ export default {
           ]
         },
         {
-          url: 'http://blog.compackage.com',
+          url: 'https://www.compackage.com/blog',
           name: 'Blog',
           target: '_blank',
           open: true,
@@ -370,7 +426,7 @@ export default {
           //     target: 'blank',
           //   },
           //   {
-          //     url: 'http://blog.compackage.com',
+          //     url: 'https://www.compackage.com/blog',
           //     name: 'Visit our Blog',
           //     img: '/images/menu-rss.png',
           //     

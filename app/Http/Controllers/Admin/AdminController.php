@@ -54,7 +54,7 @@ class AdminController extends Controller
                                     'aflac',
                                     'reports_expire',
                                     'parent_company_id'
-                                )->where('parent_company_id', 0);
+                                )->where('parent_company_id', 0)->orderBy('signup_date', 'desc');
                             }
                         ])->first()->toArray();
             

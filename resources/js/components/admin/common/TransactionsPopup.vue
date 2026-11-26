@@ -90,14 +90,18 @@
           <table>
             <thead>
               <tr>
-                <th>Description</th>
-                <th>Date / Transaction Info</th>
+                <th class="w-1/2">Description</th>
+                <th class="w-1/5 text-center">Status</th>
+                <th class="w-1/3">Date / Transaction Info</th>
               </tr>
             </thead>
           <tbody>
               <tr v-for="sale in popupUser.sales" style="border-bottom: 1pt solid gray;">
-                <td>{{sale.description}}</td>
-                <td>{{sale.created_at || ''}} <br/>{{sale.transactions && sale.transactions.transaction_id || 0}} <br/>$ {{sale.transactions && sale.transactions.amount || 0}}</td>
+                <td class="w-1/2">{{sale.description}}</td>
+                <td class="w-1/5 text-center">
+                  {{ sale.status == 0 ? 'Failed' : sale.status }}
+                </td>
+                <td class="w-1/3">{{sale.created_at || ''}} <br/>{{sale.transactions && sale.transactions.transaction_id || 0}} <br/>$ {{sale.transactions && sale.transactions.amount || 0}}</td>
               </tr>
               
           </tbody>

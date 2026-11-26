@@ -39,9 +39,21 @@ app.component('public-contactform', require('./components/public/Contactform.vue
 app.component('public-compensationpricing', require('./components/public/Compensationpricing.vue').default);
 app.component('public-referafriend', require('./components/public/forms/referaFriend.vue').default);
 app.component('public-totalcompensationdemo', require('./components/public/forms/totalCompensationDemo.vue').default);
+app.component('public-totalcompensationdemogw', require('./components/public/forms/totalCompensationDemoGW.vue').default);
 app.component('public-purchaselogin', require('./components/public/forms/purchaseLogin.vue').default);
 app.component('public-forgotpassword', require('./components/public/forms/forgotPassword.vue').default);
 app.component('public-review-feedback', require('./components/public/reviewFeedback.vue').default);
+
+// KRTech
+app.component('posts', require('./components/public/Post.vue').default);
+app.component('single-posts', require('./components/public/ItemPost.vue').default);
+app.component('category', require('./components/public/Category.vue').default);
+app.component('category-posts', require('./components/public/CategoryPosts.vue').default);
+app.component('archives', require('./components/public/Archives.vue').default);
+app.component('categories', require('./components/public/Categories.vue').default);
+app.component('recent', require('./components/public/Recent.vue').default);
+app.component('archive-posts', require('./components/public/ArchivePosts.vue').default);
+app.component('search', require('./components/public/Search.vue').default);
 
 
 /*

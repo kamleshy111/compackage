@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Models\User;
-use App\Models\Industry;
 use App\Models\Review;
+use App\Models\Industry;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\public\ContactUsNotification;
 use App\Mail\ReviewNotification;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Http;
+use App\Mail\public\ContactUsNotification;
 use App\Mail\public\ReferAFriendNotification;
 use Illuminate\Support\{Facades\Hash, Facades\Validator};
 
@@ -37,6 +38,19 @@ class PublicController extends Controller
         $keywords = 'total compensation statements, total benefit reports, employee benefit reports, total salary reports, software, COMPackage';
         $description = 'Show your employees their total benefits with Total Compensation Statements from COMPackage. Take a virtual tour of our benefits software today.';
         return view('public.home',compact('title','keywords','description'));
+    }
+
+    /**
+     * Show the Staging home page of the application.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function homebackup()
+    {
+        $title = 'Total Compensation Statements | Employee Benefit Reports | COMPackage';
+        $keywords = 'total compensation statements, total benefit reports, employee benefit reports, total salary reports, software, COMPackage';
+        $description = 'Show your employees their total benefits with Total Compensation Statements from COMPackage. Take a virtual tour of our benefits software today.';
+        return view('public.backup.homebackup',compact('title','keywords','description'));
     }
 
     /**
@@ -574,6 +588,19 @@ class PublicController extends Controller
         $description = 'Looking for a free demo of total compensation report software? See how COMPackage can help your company better communicate total salary with employees.';
         return view('public.totalCompensationDemo', compact('title','keywords','description'));
     }
+
+    /**
+     * Show the totalCompensationDemo Gushwork page of the application.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function totalCompensationDemoGW()
+    {
+        $title = 'View Demo of Benefit Statements | Total Compensation Demo | COMPackage';
+        $keywords = 'free demo, view a demo, total compensation demo, employee benefit statements demo, total benefits software';
+        $description = 'Looking for a free demo of total compensation report software? See how COMPackage can help your company better communicate total salary with employees.';
+        return view('public.totalCompensationDemoGW', compact('title','keywords','description'));
+    }
     
     /**
      * Show the aboutus page of the application.
@@ -711,7 +738,7 @@ class PublicController extends Controller
         if( $user == null ) {
             $user = new User;
         }
-
+//dd($user);
         $intent = $user->createSetupIntent();
         /*
         $plans = DB::table('membership_plans')->leftJoin('membership_plan_years', function($join) {
@@ -736,8 +763,67 @@ class PublicController extends Controller
         $title = 'Buy Total Compensation Statement Software | Employee Benefits Software';
         $keywords = 'total compensation statement software, total compensation statements, benefit statements, benefit statement software, employee benefits software, total compensation report';
         $description = 'Generate your own total compensation statements through COMPackage’s employee benefits software. Learn more about this total compensation statement software solution by contacting us today.';
-        return view('public.purchaseform', compact('intent', 'plansByYear', 'title','keywords','description', 'industries'));
+        $disableWebPageSchema = true;
+        return view('public.purchaseform', compact('intent', 'plansByYear', 'title','keywords','description', 'industries', 'disableWebPageSchema'));
     }
+
+
+    /**
+     * Why Do Employees Feel Underpaid Even When They’re Not?
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function employeesFeelUnderpaid()
+    {
+        $title = 'Why Do Employees Feel Underpaid Even When They’re Not? | COMPackage';
+        $keywords = 'compackage, compensation dissatisfaction, total compensation statements, total rewards communication';
+        $description = 'Employees often feel underpaid because they only see salary — not total compensation. Learn how compensation transparency improves retention and employee satisfaction.';
+        return view('public.employeesFeelUnderpaid', compact('title','keywords','description'));
+    }
+
+    /**
+     * Why Do Employees Feel Underpaid Even When They’re Not?
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function withoutIncreasingSalaries()
+    {
+        $title = 'How Can Companies Improve Retention Without Increasing Salaries? | COMPackage';
+        $keywords = 'compackage, employee compensation communication, total compensation statements, compensation transparency';
+        $description = 'Learn how companies improve employee retention without raising salaries by increasing compensation transparency and helping employees understand their total rewards.';
+        return view('public.withoutIncreasingSalaries', compact('title','keywords','description'));
+    }
+    
+    
+    /**
+     * Why Do Employees Feel Underpaid Even When They’re Not?
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function worthItForSmallBusinesses()
+    {
+        $title = 'Are Total Compensation Statements Worth It for Small Businesses? | COMPackage';
+        $keywords = 'compackage, compensation transparency, total compensation statements, employee retention for small businesses';
+        $description = 'Discover whether total compensation statements are worth it for small businesses and how they improve employee retention, compensation transparency, and benefit appreciation.';
+        return view('public.worthItForSmallBusinesses', compact('title','keywords','description'));
+    }
+
+
+    /**
+     * Why Do Employees Feel Underpaid Even When They’re Not?
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function improveEmployeeRetention()
+    {
+        $title = 'How Total Compensation Statements Improve Employee Retention? | COMPackage';
+        $keywords = 'compackage, employee retention strategies, retain employees without raises, total rewards statements';
+        $description = 'Learn how total compensation statements improve employee retention by increasing compensation transparency, employee appreciation, and understanding of total rewards.';
+        return view('public.improveEmployeeRetention', compact('title','keywords','description'));
+    }
+
+    
+
 
     /**
      * Get plans list
@@ -759,6 +845,164 @@ class PublicController extends Controller
         return send_success(["plansbyyear" => $plans]);
     }
 
+    /**
+     * Show the Test page of the application.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function blog(Request $request, $slug = '')
+    {
 
-    
+        $search_query = $request->query('s');
+
+        $page = $request->query('page', 1); // default page 1
+        $per_page = 10;
+
+        // $apiUrl = "https://blog.compackage.com/wp-json/wp/v2/posts?_embed";
+        //$apiUrl = "https://blog.compackage.com/wp-json/wp/v2/posts";
+        $apiUrl = "https://blog.compackage.com/wp-json/wp/v2/posts?_embed&per_page={$per_page}&page={$page}";
+
+    if (!empty($slug)) {
+        $apiUrl = "https://blog.compackage.com/wp-json/wp/v2/posts?_embed&slug=" . urlencode($slug);
+    } elseif (!empty($search)) {
+        $apiUrl .= "&search=" . urlencode($search);
+    }
+
+        $response = Http::get($apiUrl);
+        $posts = $response->json();
+        $total = $response->header('X-WP-Total');
+        $totalPages = $response->header('X-WP-TotalPages');
+        // dd($posts);
+        
+        if(!empty($slug)) {
+            if( ! empty( $posts ) && ! empty( $posts[0] ) ) {
+                $keywords = $title = $posts[0]['aioseo_title'];
+                $description = $posts[0]['aioseo_description'];
+            } else {
+                $keywords = $title = 'Total Compensation Reports Blog | COMPackage';
+                $description = 'HR Tips for Total Rewards Statements and More';
+            }
+        } else {
+            $keywords = $title = 'Total Compensation Reports Blog | COMPackage';
+            $description = 'HR Tips for Total Rewards Statements and More';
+        }
+
+        $allPosts = $this->fetchAllPosts();
+        $archive_dropdown = $this->formatPostsByMonthYear($allPosts);
+        $disableWebPageSchema = true;
+        return view('public.blog', compact('title','keywords','description', 'slug', 'posts', 'archive_dropdown', 'search_query','totalPages','page', 'disableWebPageSchema'));
+    }
+
+    public function category($slug = '')
+    {
+        // Step 1: Fetch category by slug
+        $categoryUrl = "https://blog.compackage.com/wp-json/wp/v2/categories?slug={$slug}";
+        $categoryResponse = Http::get($categoryUrl);
+        $categoryData = $categoryResponse->json();
+        $categoryId = $categoryData[0]['id'];
+        $category_name = $categoryData[0]['name'];
+
+        // Step 2: Fetch posts for the category
+        $postsUrl = "https://blog.compackage.com/wp-json/wp/v2/posts?categories={$categoryId}&_embed";
+        $postsResponse = Http::get($postsUrl);
+        $posts = $postsResponse->json();
+
+        if(!empty($slug)) {
+            $title = ucwords(str_replace("-"," ",$slug)) . ' | Total Compensation Reports Blog | COMPackage';
+        } else {
+            $title = 'COMPackage Total Compensation Statements Blog | COMPackage';
+        }
+
+        $allPosts = $this->fetchAllPosts();
+        $archive_dropdown = $this->formatPostsByMonthYear($allPosts);
+
+        $keywords = 'compackage, total compensation companies, employee benefit software company, compensation reporting company';
+        $description = 'COMPackage delivers easy-to-use and affordable benefit statement software for companies of any size. Our compensation reporting software is #1 in the industry.';
+        return view('public.category', compact('title','keywords','description', 'slug', 'posts', 'categoryId', 'category_name', 'archive_dropdown'));
+    }
+
+    public function archive($year, $month) {
+        $months = [
+            "01" => "January",
+            "02" => "February",
+            "03" => "March",
+            "04" => "April",
+            "05" => "May",
+            "06" => "June",
+            "07" => "July",
+            "08" => "August",
+            "09" => "September",
+            "10" => "October",
+            "11" => "November",
+            "12" => "December",
+        ];
+        
+        $month_year = $months[$month]. ', ' . $year;
+
+        // Step 2: Fetch posts for the category
+        $postsUrl = "https://blog.compackage.com/wp-json/wp/v2/posts?after=$year-$month-01T00:00:00&before=$year-$month-31T23:59:59&per_page=100&_embed";
+        $postsResponse = Http::get($postsUrl);
+        $posts = $postsResponse->json();
+
+        if(!empty($month_year)) {
+            $title = $month_year . ' | Total Compensation Reports Blog | COMPackage';
+        } else {
+            $title = 'COMPackage Total Compensation Statements Blog | COMPackage';
+        }
+
+        $allPosts = $this->fetchAllPosts();
+        $archive_dropdown = $this->formatPostsByMonthYear($allPosts);
+
+        $keywords = 'compackage, total compensation companies, employee benefit software company, compensation reporting company';
+        $description = 'COMPackage delivers easy-to-use and affordable benefit statement software for companies of any size. Our compensation reporting software is #1 in the industry.';
+        return view('public.archive', compact('title','keywords','description', 'posts', 'month_year', 'archive_dropdown'));
+    }
+
+    private function fetchAllPosts()
+    {
+        $posts = [];
+        $page = 1;
+
+        do {
+            $response = Http::get("https://blog.compackage.com/wp-json/wp/v2/posts", [
+                'per_page' => 100,
+                'page' => $page
+            ]);
+            
+            if ($response->failed()) {
+                break;
+            }
+
+            $data = $response->json();
+            if (empty($data)) {
+                break;
+            }
+
+            $posts = array_merge($posts, $data);
+            $page++;
+        } while (!empty($data));
+
+        return $posts;
+    }
+
+    private function formatPostsByMonthYear($posts)
+    {
+        $result = [];
+
+        foreach ($posts as $post) {
+            // $date = date_create($post['date']);
+            $monthYearKey = date('Y/m', strtotime($post['date']));
+            $monthYearValue = date('F Y', strtotime($post['date']));
+
+            if (!isset($result[$monthYearKey])) {
+                $result[$monthYearKey] = "$monthYearValue (1)";
+            } else {
+                preg_match('/\((\d+)\)$/', $result[$monthYearKey], $matches);
+                $count = $matches ? ((int)$matches[1] + 1) : 1;
+                $result[$monthYearKey] = "$monthYearValue ($count)";
+            }
+        }
+
+        return $result;
+    }
 }

@@ -1,4 +1,4 @@
-<template>
+    <template>
     <form action="#" method="POST" enctype="multipart/form-data" v-on:submit="createCompany">
     <div class="flex flex-wrap row -mx-4">
         <div class="md:w-1/2 w-full px-4">
@@ -12,7 +12,7 @@
                     <div class="md:w-1/2 xl:w-1/2">
                         <label class="mb-1 w-full">Company Logo</label>
                         <input class="w-full py-2.5" type="file" name="logo" @change="updatePhoto($event)"/>
-                        <!-- <span class="w-full block text-red-700 text-[12px]"><em>The image size should be around 240x130</em></span> -->
+                        <span class="w-full block text-red-700 text-[12px]"><em>For faster processing and smaller report file sizes, use a logo no larger than 325x325. Contact us if you want help.</em></span>
                     </div>
                     <div class="md:w-1/2 xl:w-1/2 relative mt-4 md:mt-0">    
                         <img v-if="company_details.logo_url" :src="company_details.logo_url" class="w-auto max-w-[235px] ml-auto border border-[#a3a3a3]" />
@@ -327,44 +327,114 @@
                             v-model="company_details.total_compensation_hourly_heading" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
 				</div>
             </div>
+            <div class="flex flex-wrap -mx-4 mb-3">
+				<div class="lg:w-1/2 w-full px-4 mb-3 lg:mb-0">
+                <label class="mb-1">Company Total Wages</label>
+                <input name="company_total_wages_heading" type="text" maxlength="100" 
+                            v-model="company_details.company_total_wages_heading" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
+				</div>
+				<div class="lg:w-1/2 w-full px-4 mb-3 lg:mb-0">
+                    <label class="mb-1">Company Total Wages/hr</label>
+                    <input name="company_total_wages_hr_heading" type="text" maxlength="100" v-model="company_details.company_total_wages_hr_heading" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
+				</div>
+            </div>
+
+            
+            <div class="flex flex-wrap -mx-4 mb-3">
+                <div class="lg:w-1/2 w-full px-4 mb-3 lg:mb-0">
+                    <label class="mb-1">Base Pay Colors</label>
+                    <div class="flex  gap-1.5">
+                        <VSwatches v-model="company_details.color3" popover-x="left" show-fallback fallback-input-type="color" />
+                        <!-- <v-swatches v-model="company_details.color3" popover-x="left" swatches="text-advanced"></v-swatches> -->
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color3" type="text" maxlength="10" v-model="company_details.color3" class="pb-2 pl-8 ml-2 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_bg">background</span>
+                        </div>
+
+                        <VSwatches v-model="company_details.color3_3" popover-x="left" show-fallback fallback-input-type="color" />
+                        <!-- <v-swatches v-model="company_details.color3_3" popover-x="left" swatches="text-advanced"></v-swatches> -->
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color3_3" type="text" maxlength="10" v-model="company_details.color3_3" class="pb-2 pl-8 ml-2 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_font">font</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 w-full px-4">
+                    <label class="mb-1">Total Compensation Colors</label>
+                    <div class="flex gap-1.5">
+                        <!---<v-swatches></v-swatches>-->
+                        <VSwatches v-model="company_details.color4" popover-x="left" show-fallback fallback-input-type="color" />
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color4" type="text" maxlength="10" v-model="company_details.color4" class="pb-2 pl-8 ml-2 rounded-[10px] focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5  bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_bg">background</span>
+                        </div>
+
+                        <VSwatches v-model="company_details.color4_4" popover-x="left" show-fallback fallback-input-type="color" />
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color4_4" type="text" maxlength="10" v-model="company_details.color4_4" class="pb-2 pl-8 ml-2 rounded-[10px] focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5  bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_font">font</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="flex flex-wrap -mx-4 mb-3">
-                <div class="lg:w-1/2 w-full px-4 mb-3 lg:mb-0">
-                    <label class="mb-1">Employee Contributions Color</label>
-                    
-                    <div class="flex">
-                        <VSwatches v-model="company_details.color1" popover-x="left" swatches="text-advanced" />
-                        <!-- <v-swatches v-model="company_details.color1" popover-x="left" swatches="text-advanced"></v-swatches> -->
-                        <input name="color1" type="text" maxlength="10" v-model="company_details.color1" class="pl-14 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                <div class="lg:w-1/2 w-full px-4">
+                    <label class="mb-1">Co. Paid Other Cash & Benefits Colors</label>
+                    <div class="flex  gap-1.5">
+                        <VSwatches v-model="company_details.color2" popover-x="left" show-fallback fallback-input-type="color" />
+                        <!-- <v-swatches v-model="company_details.color2" popover-x="left" swatches="text-advanced"></v-swatches> -->
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color2" type="text" maxlength="10" v-model="company_details.color2" class="pb-2 pl-8 ml-2 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_bg">background</span>
+                        </div>
+                        <VSwatches v-model="company_details.color2_2" popover-x="left" show-fallback fallback-input-type="color" />
+                        <!-- <v-swatches v-model="company_details.color2_2" popover-x="left" swatches="text-advanced"></v-swatches> -->
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color2_2" type="text" maxlength="10" v-model="company_details.color2_2" class="pb-2 pl-8 ml-2 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_font">font</span>
+                        </div>
                     </div>
                 </div>
-                <div class="lg:w-1/2 w-full px-4">
-                    <label class="mb-1">Employer Contributions Color</label>
-                    <div class="flex">
-                        <VSwatches v-model="company_details.color2" popover-x="left" swatches="text-advanced" />
-                        <!-- <v-swatches v-model="company_details.color2" popover-x="left" swatches="text-advanced"></v-swatches> -->
-                        <input name="color2" type="text" maxlength="10" v-model="company_details.color2" class="pl-14 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+
+                <div class="lg:w-1/2 w-full px-4 mb-3 lg:mb-0">
+                    <label class="mb-1">Employee Paid Benefits Color</label>
+                    <div class="flex  gap-1.5">
+                        <VSwatches v-model="company_details.color1" popover-x="left" show-fallback fallback-input-type="color" />
+                        <!-- <v-swatches v-model="company_details.color1" popover-x="left" swatches="text-advanced"></v-swatches> -->
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color1" type="text" maxlength="10" v-model="company_details.color1" class="pb-2 pl-8 ml-2 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_bg">background</span>
+                        </div>
+                        <VSwatches v-model="company_details.color1_1" popover-x="left" show-fallback fallback-input-type="color" style="opacity: 0;" />
+                        <!-- <v-swatches v-model="company_details.color1_1" popover-x="left" swatches="text-advanced"></v-swatches> -->
+                        <div class="swatches_input_bg_wrap" style="opacity: 0;">
+                            <input name="color1_1" type="text" maxlength="10" v-model="company_details.color1_1" class="pb-2 pl-8 ml-2 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_font">font</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="flex flex-wrap -mx-4 mb-3">
-                <div class="lg:w-1/2 w-full px-4 mb-3 lg:mb-0">
-                    <label class="mb-1">Base Pay Color</label>
-                    <div class="flex">
-                        <VSwatches v-model="company_details.color3" popover-x="left" swatches="text-advanced" />
-                        <!-- <v-swatches v-model="company_details.color3" popover-x="left" swatches="text-advanced"></v-swatches> -->
-                        <input name="color3" type="text" maxlength="10" v-model="company_details.color3" class="pl-14 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
-                    </div>
-                </div>
                 <div class="lg:w-1/2 w-full px-4">
-                    <label class="mb-1">Total Compensation Color</label>
-                    <div class="flex">
-                        <!---<v-swatches></v-swatches>-->
-                        <VSwatches v-model="company_details.color4" popover-x="left" swatches="text-advanced" />
-                        <input name="color4" type="text" maxlength="10" v-model="company_details.color4" class="pl-14 rounded-[10px] focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5  bg-neutral-100 w-full form-control" />
+                    <label class="mb-1">Total Wages Colors</label>
+                    <div class="flex  gap-1.5">
+                        <VSwatches v-model="company_details.color5" popover-x="left" show-fallback fallback-input-type="color" />
+                        <!-- <v-swatches v-model="company_details.color5" popover-x="left" swatches="text-advanced"></v-swatches> -->
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color5" type="text" maxlength="10" v-model="company_details.color5" class="pb-2 pl-8 ml-2 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_bg">background</span>
+                        </div>
+                        <VSwatches v-model="company_details.color5_5" popover-x="left" show-fallback fallback-input-type="color" />
+                        <!-- <v-swatches v-model="company_details.color5_5" popover-x="left" swatches="text-advanced"></v-swatches> -->
+                        <div class="swatches_input_bg_wrap">
+                            <input name="color5_5" type="text" maxlength="10" v-model="company_details.color5_5" class="pb-2 pl-8 ml-2 focus:border-lbrwnclr outline-0 border border-neutral-400 h-[42px] px-2.5 rounded-[10px] bg-neutral-100 w-full form-control" />
+                            <span class="swatches_span_label_font">font</span>
+                        </div>
                     </div>
                 </div>
             </div>
+            
             <div class="w-full mb-3">
                 <label class="mb-1">Company Designation</label>
                 <input name="company_designation" type="text" maxlength="255" 
@@ -481,13 +551,12 @@
             </div>	
             <!-- <div class="back-btnend"><input type="submit" name="btn_defaults" value="Restore Default Report Information Settings" id="content_main_btn_defaults" class="outline-none cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-sm"></div> -->
         </div>
-        </div>    
-        <!-- Loader -->
-        <div class="mxi-loader-wrap backdrop-blur-sm fixed w-full h-full top-0 left-0" v-show="viewLoader">
-            <img :src="url + '/images/com-loader.gif'" alt=""
-                class="loader-img top-[50%] left-[50%] absolute -translate-y-[50%] -translate-x-[50%]">
-        </div>
-        
+    </div>    
+    <!-- Loader -->
+    <div class="mxi-loader-wrap backdrop-blur-sm fixed w-full h-full top-0 left-0" v-show="viewLoader">
+        <img :src="url + '/images/com-loader.gif'" alt=""
+            class="loader-img top-[50%] left-[50%] absolute -translate-y-[50%] -translate-x-[50%]">
+    </div>        
     </form>
 </template>
 
@@ -539,9 +608,15 @@ export default {
                 total_compensation_heading: '',
                 company_designation: '',
                 color1: '#000000',
-                color2: '#000000',
-                color3: '#000000',
-                color4: '',
+                color1_1: '#000000',
+                color2: '#b6d7a8',
+                color2_2: '#000000',
+                color3: '#d48a3e',
+                color3_3: '#000000',
+                color4: '#4a86c8',
+                color4_4: '#000000',
+                color5: '#a194c4',
+                color5_5: '#000000',
                 currency_symbol: '$',
                 company_name_email: '',
                 dd_field_message_email: '',
@@ -569,33 +644,43 @@ export default {
                 insurance_benefits_total_heading_hourly: '',
                 special_benefits_total_heading_hourly: '',
                 retirement_benefits_total_heading_hourly: '',
+                company_total_wages_hr_heading: '',
+                company_total_wages_heading: '',
             }
         }
     },
     created() {
         if( this.editcompany ) {
+            console.log("QWERTYuiop[]");
             if( this.editcompany.logo_url ) {
                 this.editcompany.logo_url = this.url+'/'+this.editcompany.logo_url;
             }
             this.company_details = this.editcompany;
-            /*
-            if(this.company_details.base_pay_hourly_heading == null || this.company_details.base_pay_hourly_heading == '')
+            console.log("00000000000000QWERTaaYee00000000000000000000");
+            if(this.company_details.color1_1 == null || this.company_details.color1_1 == '')
             {
-                this.company_details.base_pay_hourly_heading = 'Base Hourly';
+                this.company_details.color1_1 = '#000000';
             }
-            if(this.company_details.other_cash_hourly_heading == null || this.company_details.other_cash_hourly_heading == '')
+            if(this.company_details.color2_2 == null || this.company_details.color2_2 == '')
             {
-                this.company_details.other_cash_hourly_heading = 'Other Cash Ben/hr';
+                this.company_details.color2_2 = '#000000';
             }
-            if(this.company_details.company_paid_hourly_heading == null || this.company_details.company_paid_hourly_heading == '')
+            if(this.company_details.color3_3 == null || this.company_details.color3_3 == '')
             {
-                this.company_details.company_paid_hourly_heading = 'Benefits/hr';
+                this.company_details.color3_3 = '#000000';
             }
-            if(this.company_details.total_compensation_hourly_heading == null || this.company_details.total_compensation_hourly_heading == '')
+            if(this.company_details.color4_4 == null || this.company_details.color4_4 == '')
             {
-                this.company_details.total_compensation_hourly_heading = 'Total Pkg/hr';
+                this.company_details.color4_4 = '#000000';
             }
-            */
+            if(this.company_details.color5_5 == null || this.company_details.color5_5 == '')
+            {
+                this.company_details.color5_5 = '#000000';
+            }
+            if(this.company_details.color5 == null || this.company_details.color5 == '')
+            {
+                this.company_details.color5 = '#a194c4';
+            }
         }
     },
     methods: {
@@ -648,6 +733,12 @@ export default {
             form.set('color2', this.company_details.color2);
             form.set('color3', this.company_details.color3);
             form.set('color4', this.company_details.color4);
+            form.set('color5', this.company_details.color5);
+            form.set('color1_1', this.company_details.color1_1 ? this.company_details.color1_1 : '#000000');
+            form.set('color2_2', this.company_details.color2_2 ? this.company_details.color2_2 : '#000000');
+            form.set('color3_3', this.company_details.color3_3 ? this.company_details.color3_3 : '#000000');
+            form.set('color4_4', this.company_details.color4_4 ? this.company_details.color4_4 : '#000000');
+            form.set('color5_5', this.company_details.color5_5 ? this.company_details.color5_5 : '#000000');
             form.set('currency_symbol', this.company_details.currency_symbol);
             form.append("logo", this.company_details.logo);
 
@@ -660,6 +751,8 @@ export default {
             form.set('base_pay_hourly_heading', this.company_details.base_pay_hourly_heading ? this.company_details.base_pay_hourly_heading : '');
             form.set('other_cash_hourly_heading', this.company_details.other_cash_hourly_heading ? this.company_details.other_cash_hourly_heading : '');
             form.set('company_paid_hourly_heading', this.company_details.company_paid_hourly_heading ? this.company_details.company_paid_hourly_heading : '');
+            form.set('company_total_wages_heading', this.company_details.company_total_wages_heading ? this.company_details.company_total_wages_heading : '');
+            form.set('company_total_wages_hr_heading', this.company_details.company_total_wages_hr_heading ? this.company_details.company_total_wages_hr_heading : '');
             form.set('total_compensation_hourly_heading', this.company_details.total_compensation_hourly_heading ? this.company_details.total_compensation_hourly_heading : '');
             form.set('welfare_benefits_total_heading', this.company_details.welfare_benefits_total_heading ? this.company_details.welfare_benefits_total_heading : '');
             form.set('time_off_benefits_total_heading', this.company_details.time_off_benefits_total_heading ? this.company_details.time_off_benefits_total_heading : '');
@@ -709,11 +802,11 @@ export default {
                     <p>Here are the steps:</p>
                     <ol>
                     <li>
-                        <p>In the Loader template, you’ll need three new columns:</p>
+                        <p>In the Loader template, you’ll need to populate three columns: </p>
                         <ol class="sub_ol" type="a">
-                        <li><strong>Digital Delivery:</strong> For all employees in which you have a “1” or “Yes” or anything in the column, Digital Delivery will be enabled.</li>
-                        <li><strong>Digital Delivery ID:</strong> This is to validate the account. An example might be the last four digits of the employee’s social security number (or any other unique identifier that both you and only the employee know).</li>
-                        <li><strong>Employee’s Email:</strong> for the email addresses of each employee to whom you wish to digitally deliver.</li>
+                            <li><strong>Digital Delivery:</strong> For all employees in which you have a “1” or “Yes” or anything in the column, Digital Delivery will be enabled.</li>
+                            <li><strong>Digital Delivery ID:</strong> This is to validate the account. An example might be the last four digits of the employee’s social security number (or any other unique identifier that both you and only the employee know).</li>
+                            <li><strong>Employee’s Email:</strong> for the email addresses of each employee to whom you wish to digitally deliver.</li>
                         </ol>
                     </li>
                     <li>
@@ -721,7 +814,7 @@ export default {
                         <ol class="sub_ol" type="a">
                         <li>Populate each employee’s Digital Delivery ID manually in the employee record.</li>
                         <li>Populate each employee’s email manually in the employee record.</li>
-                        <li>Click the Allow Digital Delivery toggle in each employee’s record.</li>
+                        <li>Click the <i>Allow Digital Delivery</i> toggle in each employee’s record.</li>
                         </ol>
                     </li>
                     <li>
@@ -741,9 +834,9 @@ export default {
                         <li>COMPANY NAME for the email</li>
                         <li>DIGITAL DELIVERY MESSAGE for the email</li>
                         </ol>
-                        <p class="mb-3">These actual words are used for the email to your employees (second image below). Test this by sending an email to yourself.</p>
+                        <p class="mb-3">These actual words are used for the email to your employees (second image below - underlined in red). Test this by sending an email to yourself.</p>
                     </li>
-                    <li>To send to employee(s), click on their name(s) in the Employee tab and then click Digital Delivery.</li>
+                    <li>To send to employee(s), click on their name(s) in the Employee tab and then click <i>Digital Delivery</i>.</li>
                     </ol>
                 </div>
                 <div class="popup_img_border text-center mb-3 ml-4"><img src="${this.url}/images/comp_3.png"></div>
@@ -757,11 +850,83 @@ export default {
                 confirmButtonText: 'Close'
             });
         },
-        updatePhoto( e ) {
+        async updatePhoto( e ) {
+            let file = e.target.files[0];
+            if (!file) return;
+
+            try {
+                file = await this.resizeImageIfNeeded(file, 325);
+            } catch (err) {
+                console.error('Logo resize failed, using original file:', err);
+            }
+
+            this.company_details.logo = file;
+            this.company_details.logo_url = URL.createObjectURL(file);
+        },
+        /* Resize an image file so it fits within maxDim x maxDim, preserving aspect ratio.
+           Returns the original file untouched if it's already within bounds. */
+        resizeImageIfNeeded( file, maxDim ) {
+            return new Promise((resolve, reject) => {
+                if (!file.type.startsWith('image/')) {
+                    resolve(file); // not an image (shouldn't happen with logo input), skip
+                    return;
+                }
+
+                const img = new Image();
+                const reader = new FileReader();
+
+                reader.onload = (e) => {
+                    img.onload = () => {
+                        const { width, height } = img;
+
+                        if (width <= maxDim && height <= maxDim) {
+                            resolve(file); // already small enough
+                            return;
+                        }
+
+                        let newWidth, newHeight;
+                        if (width > height) {
+                            newWidth = maxDim;
+                            newHeight = Math.round((height / width) * maxDim);
+                        } else {
+                            newHeight = maxDim;
+                            newWidth = Math.round((width / height) * maxDim);
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = newWidth;
+                        canvas.height = newHeight;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+                        const outputType = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                        canvas.toBlob(
+                            (blob) => {
+                                if (!blob) {
+                                    reject(new Error('Canvas toBlob failed'));
+                                    return;
+                                }
+                                resolve(new File([blob], file.name, {
+                                    type: outputType,
+                                    lastModified: Date.now(),
+                                }));
+                            },
+                            outputType,
+                            0.9
+                        );
+                    };
+                    img.onerror = () => reject(new Error('Failed to load image for resizing'));
+                    img.src = e.target.result;
+                };
+                reader.onerror = () => reject(new Error('Failed to read file'));
+                reader.readAsDataURL(file);
+            });
+        },
+        /*updatePhoto( e ) {
             this.company_details.logo = e.target.files[0];
             this.company_details.logo_url = URL.createObjectURL(e.target.files[0]);
         },
-        /* Show error message on the form */
+         Show error message on the form */
         showFormError(key, message) {
             jQuery('[name=' + key + ']').addClass('border-2 border-rose-600');
             showErrorMessage(message);
@@ -791,5 +956,27 @@ export default {
     }
     .popup_img_border img {
         border: solid 2px #999;
+        width: 100%;
+        max-width: 70%;
+    }
+    .swatches_input_bg_wrap {
+    position: relative;
+    z-index: -1;
+    height: 42px;
+    margin-right: 8px;
+    }
+    .swatches_input_bg_wrap .swatches_span_label_bg, .swatches_span_label_font {
+        position: absolute;
+        bottom: 0;
+        font-size: 12px;
+        left: 42px;
+    }
+    .swatches_input_bg_wrap .swatches_span_label_font {
+        left: 60px;
+    }
+    @media screen and (max-width:767px){
+        .popup_img_border img {
+            max-width: 70%;
+        }
     }
 </style>

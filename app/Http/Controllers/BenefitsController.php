@@ -97,7 +97,7 @@ class BenefitsController extends Controller
                     $benefit->show                      = ! empty( $companyBenefit['show'] ) ? 1 : 0;
                     $benefit->benefit_custom_name       = ! empty( $companyBenefit['additional_benefit_name'] ) ? $companyBenefit['additional_benefit_name'] : '';
                     $benefit->employer_default_value    = ! empty( $companyBenefit['employer_default_value'] ) ? $companyBenefit['employer_default_value'] : 0.00;
-                    // $benefit->employee_co_pay           = ! empty( $companyBenefit['employee_co_pay'] ) ? $companyBenefit['employee_co_pay'] : 0.00;
+                    $benefit->employee_co_pay           = ! empty( $companyBenefit['employee_co_pay'] ) ? 1 : 0;
                     $benefit->employee_default_value    = ! empty( $companyBenefit['employee_default_value'] ) ? $companyBenefit['employee_default_value'] : 0.00;
                     $benefit->order_sequence            = ! empty( $companyBenefit['order_sequence'] ) ? $companyBenefit['order_sequence'] : $order_sequence;
                     $benefit->addedby                   = 'admin';
@@ -126,6 +126,19 @@ class BenefitsController extends Controller
         return send_success(["msg" => 'Benefits successfully updated.']);
     }
 
+    public function getAllSelectedBenefits( Request $request ){
+        $request_type = $request->request_type;
+        $loggedinCompany = auth()->user()->currentSessionCompany();
+        $company = Company::find($loggedinCompany);
+        if( $request_type == "all"){
+            $selectedBenefits = $company->benefits()->withPivot('benefit_custom_name','employee_co_pay')->orderBy('benefit_type_id')->get();
+        }
+        else{
+            $selectedBenefits = $company->benefits()->withPivot('benefit_custom_name','employee_co_pay')->where('company_benefit.show', 1)->orderBy('benefit_type_id')->get();
+        }
+        return send_success(["benefits" => $selectedBenefits]);
+    }
+
     /**
      * Getting benefit types and thier benefits with company benefit data (or admin, if user is logged in using admin user).
      * This data will be used to show selected data on the company benefit page.
@@ -150,14 +163,13 @@ class BenefitsController extends Controller
             foreach( $benefits as $order_sequence => $benefit ) {
                 // Get pivot data(relation data)
                 if( auth()->user()->isAdmin() ) {
-                    $userRelationWithBenefits = $benefit->where('id', $benefit->id)->where('addedby', 'admin')->select('id', 'name', 'calculator', 'order_sequence', 'benefit_custom_name', 'employer_default_value', 'employee_default_value', 'show', 'can_categorize', 'category_id')->where('active', 1)->first();
+                    $userRelationWithBenefits = $benefit->where('id', $benefit->id)->where('addedby', 'admin')->select('id', 'name', 'calculator', 'order_sequence', 'benefit_custom_name', 'employer_default_value', 'employee_default_value', 'show', 'can_categorize', 'category_id', 'employee_co_pay')->where('active', 1)->first();
                 } else {
                     $userRelationWithBenefits = $benefit->companies($loggedinCompany)->withPivot(['benefit_custom_name', 'employee_co_pay','employer_default_value', 'employee_default_value', 'show', 'can_categorize', 'category_id', 'order_sequence', 'addedby', 'company_id', 'bold', 'italic', 'add_dollar', 'decimal_cents'])->where('company_benefit.company_id', $loggedinCompany)->first();
                     if( ! empty($userRelationWithBenefits) ) {
                         $userRelationWithBenefits = $userRelationWithBenefits->pivot;
                     }
                 }
-                
                 // If found data then, assign to the object.
                 if( ! empty($userRelationWithBenefits) ) {
                     $temp = [];

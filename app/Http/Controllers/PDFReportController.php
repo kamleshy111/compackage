@@ -13,21 +13,22 @@ use Illuminate\Support\Facades\DB;
 class PDFReportController extends Controller
 {
     public $test;
-    public function generate_report( $employee_id, $type = 'show', $test = 'no' )
+    public function generate_report( $employee_id, $type = 'show', $test = 'no', $exclude_emp = false )
     {
         $this->test = $test;
         $employee = Employee::find($employee_id);
         if( ! empty( $employee ) ) {
             $company = $employee->company()->first();
             if( ! empty( $company ) ) {
-                $this->_individual_pdf_report( $company, $employee, $type);
+                $this->_individual_pdf_report( $company, $employee, $type, $exclude_emp);
             }
         }
         return false;
     }
 
-    private function _individual_pdf_report( Company $company, Employee $employee, String $type) {
+    private function _individual_pdf_report( Company $company, Employee $employee, String $type, String $exclude_emp) {
         if( $company->canCompanyPrintReports() ) {
+
             $categories = CustomCategory::get();
             $category_data = [];
             $category_pdf_body_heading_override = [];
@@ -121,7 +122,12 @@ class PDFReportController extends Controller
                         $temp['additional_benefit_name'] = ! empty( $userRelationWithBenefits->benefit_custom_name ) ? $userRelationWithBenefits->benefit_custom_name : '';
                     }
                     $temp['employer_default_value']  = ! empty( $userRelationWithBenefits->employer_default_value ) ? $userRelationWithBenefits->employer_default_value : 0;
-                    $temp['employee_default_value']  = ! empty( $userRelationWithBenefits->employee_default_value && $benefit1->pivot->employee_co_pay ) ? $userRelationWithBenefits->employee_default_value : 0;
+                    if( $exclude_emp == 1 ){
+                        $temp['employee_default_value']  = 0;
+                    }
+                    else{
+                        $temp['employee_default_value']  = ! empty( $userRelationWithBenefits->employee_default_value && $benefit1->pivot->employee_co_pay ) ? $userRelationWithBenefits->employee_default_value : 0;
+                    }
                     
                     $temp["addedby"]                 = $benefit['addedby'];
                     $temp["benefit_type_id"]         = $benefit['benefit_type_id'];
@@ -187,7 +193,9 @@ class PDFReportController extends Controller
                         
                         // If benefit ID is 7 then, do not include in the total
                         if( $benefit1->benefit_type_id != 7 ) {
-                            if( $benefit1->benefit_type_id == 10 && ! $employee->hourly_pay_functionality ) { //&& empty($benefit->hourly_amount) ) {
+
+                            if( ($benefit1->benefit_type_id == 10 && ! $employee->hourly_pay_functionality) || ($benefit1->benefit_type_id == 1 && $employee->hourly_pay_functionality && $benefit1->id != 6 ) ){
+                            //if( $benefit1->benefit_type_id == 10 && ! $employee->hourly_pay_functionality ) { //&& empty($benefit->hourly_amount) ) {
 
                             } else if( $employee->hourly_pay_functionality && ! $benefit1->hourly_hours && ! $benefit1->hourly_rate && $benefit1->id != 1 ) {
                                 if( $benefit1->hourly_amount && $benefit1->hourly_hours && $benefit1->hourly_rate ) {
@@ -294,15 +302,9 @@ class PDFReportController extends Controller
                     }
                 }
             }
-
-            if (isset($category_total[2])) {
-                $employer_benefits_total += $category_total[2];
-            } else {
-                // Handle the case where the key does not exist
-                $category_total[2] = 0; // or any default value you want
+            if( isset($category_total[2] ) ){
                 $employer_benefits_total += $category_total[2];
             }
-            //$employer_benefits_total += $category_total[2];
             //dd($category_total);
             $data['category_total'] = $category_total;
             $data['employee_benefits_total']    = $employee_benefits_total;
@@ -340,7 +342,7 @@ class PDFReportController extends Controller
             
             $data['other_cash_benefits']        = $other_cash_benefits;
             //$data['other_income_total']         = $other_income_total;
-            $data['other_income_total']         = $category_total[2];
+            $data['other_income_total']         = isset($category_total[2]) ? $category_total[2]:0;
             $data['your_base_pay']              = $your_base_pay;
             $data['right_left_total']           = ( ($right_side_employee + $right_side_employer) > 0 ) ? $right_side_employee + $right_side_employer : 1;
             $data['company']->logo              = $company->getAttachment();
@@ -375,6 +377,8 @@ class PDFReportController extends Controller
             $data['_bt_10_142_hours'] = ! empty( $_bt_10[142] ) && $_bt_10[142]['employer_default_value'] ? number_format($_bt_10[142]['employer_default_value'], 0) : 0;
             $data['_bt_10_143_total'] = ! empty( $_bt_10[143] ) && $_bt_10[143]['employer_default_value'] ? $_bt_10[143]['employer_default_value'] : 0;
             # Hourly functionality
+            
+            $data['_exclude_emp'] = $exclude_emp;
             
             if( ! empty($_GET['test']) ) {
                 dd($data);
@@ -411,7 +415,7 @@ class PDFReportController extends Controller
     }
 
     /** Combined PDF */
-    public function _individual_pdf_report_combined_pdf( Company $company, Employee $employee, String $type) {
+    public function _individual_pdf_report_combined_pdf( Company $company, Employee $employee, String $type, String $exclude_emp) {
         if( $company->canCompanyPrintReports() ) {
             $categories = CustomCategory::get();
             $category_data = [];
@@ -508,7 +512,12 @@ class PDFReportController extends Controller
                         $temp['additional_benefit_name'] = ! empty( $userRelationWithBenefits->benefit_custom_name ) ? $userRelationWithBenefits->benefit_custom_name : '';
                     }
                     $temp['employer_default_value']  = ! empty( $userRelationWithBenefits->employer_default_value ) ? $userRelationWithBenefits->employer_default_value : 0;
-                    $temp['employee_default_value']  = ! empty( $userRelationWithBenefits->employee_default_value && $benefit1->pivot->employee_co_pay ) ? $userRelationWithBenefits->employee_default_value : 0;
+                    if( $exclude_emp == 1 ){
+                        $temp['employee_default_value']  = 0;
+                    }
+                    else{
+                        $temp['employee_default_value']  = ! empty( $userRelationWithBenefits->employee_default_value && $benefit1->pivot->employee_co_pay ) ? $userRelationWithBenefits->employee_default_value : 0;
+                    }
                     
                     $temp["addedby"]                 = $benefit['addedby'];
                     $temp["benefit_type_id"]         = $benefit['benefit_type_id'];
@@ -674,12 +683,7 @@ class PDFReportController extends Controller
                     }
                 }
             }
-            //$employer_benefits_total += $category_total[2];
-            if (isset($category_total[2])) {
-                $employer_benefits_total += $category_total[2];
-            } else {
-                // Handle the case where the key does not exist
-                $category_total[2] = 0; // or any default value you want
+            if( isset($category_total[2] ) ){
                 $employer_benefits_total += $category_total[2];
             }
             $data['category_total'] = $category_total;
@@ -716,7 +720,7 @@ class PDFReportController extends Controller
             }
             
             $data['other_cash_benefits']        = $other_cash_benefits;
-            $data['other_income_total']         = $category_total[2];
+            $data['other_income_total']         = isset($category_total[2]) ? $category_total[2] : 0;
             $data['your_base_pay']              = $your_base_pay;
             $data['right_left_total']           = ( ($right_side_employee + $right_side_employer) > 0 ) ? $right_side_employee + $right_side_employer : 1;
             $data['company']->logo              = $company->getAttachment();
@@ -750,6 +754,7 @@ class PDFReportController extends Controller
             $data['_bt_10_141_rate'] = ! empty( $_bt_10[141] ) && $_bt_10[141]['employer_default_value'] ? $_bt_10[141]['employer_default_value'] : 0;
             $data['_bt_10_142_hours'] = ! empty( $_bt_10[142] ) && $_bt_10[142]['employer_default_value'] ? number_format($_bt_10[142]['employer_default_value'], 0) : 0;
             $data['_bt_10_143_total'] = ! empty( $_bt_10[143] ) && $_bt_10[143]['employer_default_value'] ? $_bt_10[143]['employer_default_value'] : 0;
+            $data['_exclude_emp'] = $exclude_emp;
             return $data; 
         } else {
             abort(403, 'The subscription has been expired. Please contact to your employer to renew the plan.');

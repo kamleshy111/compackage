@@ -16,11 +16,13 @@
                     </ul>
                     <h3 class="text-xl text-greendarkclr font-bold mb-5">Purchase Multiple License Years and Save Even More!</h3>
                     <public-compensationpricing :pplansbyyear="{{json_encode($plansByYear)}}"></public-compensationpricing>
-                    <div class="text-center mt-4 mb-8">
+                    <div class="text-center mt-4 mb-8 flex flex-wrap flex-row gap-4 justify-center">
+                        <a href="{{route('totalCompensationDemo')}}" class="w-1/3 rounded px-6 py-2.5 leading-4 text-center gradient-green hover:gradient-lgreen text-white font-sans font-bold text-lg">View Demo</a>
                         <a href="{{route('purchaseform')}}" class="w-1/3 rounded px-6 py-2.5 leading-4 text-center gradient-green hover:gradient-lgreen text-white font-sans font-bold text-lg">Purchase Now</a>
                     </div>
-                    <h3 class="text-xl text-greendarkclr font-bold mb-5">Features Chart</h3>
-                    <div class="mt-4 relative overflow-x-auto md:overflow-visible">
+                    <h4 class="text-md text-greendarkclr font-bold mb-5">Want us to do the work for you? <a href="/contactus" class="underline">Contact Us</a> for pricing on processing your reports.</h4>
+                    <h3 class="text-xl text-greendarkclr font-bold mb-[-30px]">Features Chart</h3>
+                    <div class="relative overflow-x-auto md:overflow-visible">
                         <table class="w-full text-sm text-center text-black">
                             <thead class="text-xs">
                                 <tr>

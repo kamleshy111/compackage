@@ -38,7 +38,7 @@ class DemoEmail extends Command
     {
         try {
             // Retrieve the option value from the Option model
-            DemoInquiry::where('became_order', [2, 0])->where('deleted', 0) ->whereDate('created_at', Carbon::now()->subDays(7))->each(function($demo) {
+            DemoInquiry::whereIn('became_order', [2, 0])->where('deleted', 0) ->whereDate('created_at', Carbon::now()->subDays(7))->each(function($demo) {
             //DemoInquiry::where('became_order', [2, 0])->whereDate('created_at', Carbon::now()->subDays(7))->each(function($demo) {
                 $emailContent   = Option::where('option_name', 'week1')->value('option_value');
                 $subject        = Option::where('option_name', 'subject_week1')->value('option_value');
@@ -70,7 +70,7 @@ class DemoEmail extends Command
             });
 
             //DemoInquiry::where('became_order', [2, 0])->whereDate('created_at', Carbon::now()->subDays(14))->each(function($demo) {
-            DemoInquiry::where('became_order', [2, 0])->where('deleted', 0) ->whereDate('created_at', Carbon::now()->subDays(14))->each(function($demo) {
+            DemoInquiry::whereIn('became_order', [2, 0])->where('deleted', 0) ->whereDate('created_at', Carbon::now()->subDays(14))->each(function($demo) {
                 $emailContent   = Option::where('option_name', 'week2')->value('option_value');
                 $subject        = Option::where('option_name', 'subject_week2')->value('option_value');
                 $firstname      = $demo->firstname; 
@@ -98,7 +98,7 @@ class DemoEmail extends Command
             });
             
             //DemoInquiry::where('became_order', [2, 0])->whereDate('created_at', Carbon::now()->subDays(21))->each(function($demo) {
-            DemoInquiry::where('became_order', [2, 0])->where('deleted', 0) ->whereDate('created_at', Carbon::now()->subDays(21))->each(function($demo) {
+            DemoInquiry::whereIn('became_order', [2, 0])->where('deleted', 0) ->whereDate('created_at', Carbon::now()->subDays(21))->each(function($demo) {
                 $emailContent   = Option::where('option_name', 'week3')->value('option_value');
                 $subject        = Option::where('option_name', 'subject_week3')->value('option_value');
                 $firstname      = $demo->firstname; 
@@ -126,7 +126,7 @@ class DemoEmail extends Command
             });
 
             //DemoInquiry::where('became_order', [2, 0])->whereDate('created_at', Carbon::now()->subDays(28))->each(function($demo) {
-            DemoInquiry::where('became_order', [2, 0])->where('deleted', 0) ->whereDate('created_at', Carbon::now()->subDays(28))->each(function($demo) {
+            DemoInquiry::whereIn('became_order', [2, 0])->where('deleted', 0) ->whereDate('created_at', Carbon::now()->subDays(28))->each(function($demo) {
                 $emailContent   = Option::where('option_name', 'week4')->value('option_value');
                 $subject        = Option::where('option_name', 'subject_week4')->value('option_value');
                 $firstname      = $demo->firstname; 

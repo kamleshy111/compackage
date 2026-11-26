@@ -104,7 +104,7 @@
                 <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th @click="sortTableWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('string')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
                                     <span>Name</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
@@ -114,7 +114,7 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th @click="sortTableWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('string')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
                                     <span>Company</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
@@ -124,7 +124,7 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th @click="sortTableWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('string')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
                                     <span>UserName / Email / Phone / Ext.</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
@@ -134,7 +134,7 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th @click="sortTableWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('string')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
                                     <span>Industry</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
@@ -144,7 +144,7 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th @click="sortTableWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('string')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
                                     <span>Description</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
@@ -154,12 +154,22 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th class="px-2 py-2 ">
+                            <!-- <th class="px-2 py-2 ">
                                 <span class="flex items-center">
                                     <span>Coupon</span>
                                 </span>
+                            </th> -->
+                            <th @click="sortTableWebapp('string')" class="px-2 py-2 cursor-pointer">
+                                <span class="flex items-center">
+                                    <span>Coupon</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                    </svg>
+                                </span>
                             </th>
-                            <th @click="sortTableWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('num')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
                                     <span>Licensing Package</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
@@ -169,9 +179,9 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th @click="sortTableWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('num')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
-                                    <span>Amount / Credits</span>
+                                    <span>Amount</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -179,7 +189,7 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th @click="sortTableWebapp2()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp2('num')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
                                     <span>Years</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
@@ -189,7 +199,7 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th @click="sortTableWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('string')" class="px-2 py-2 cursor-pointer">
                                 <span class="flex items-center">
                                     <span>Status</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
@@ -199,9 +209,25 @@
                                     </svg>
                                 </span>
                             </th>
-                            <th @click="sortTableDateWebapp()" class="px-2 py-2 cursor-pointer">
+                            <th @click="sortTableWebapp('date')" class="px-2 py-2 cursor-pointer">
+                                <!-- @click="sortTableDateWebapp()" -->
                                 <span class="flex items-center">
                                     <span>Date</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                    </svg>
+                                </span>
+                            </th>
+                             <!-- <th class="px-2 py-2">
+                                <span class="flex items-center">
+                                    <span>Usage</span>
+                                </span>
+                            </th> -->
+                            <th @click="sortTableWebapp('num')" class="px-2 py-2 cursor-pointer">
+                                <span class="flex items-center">
+                                    <span>Usage</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" class="cursor-pointer h-6 w-6" fill="none"
                                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -227,7 +253,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
                         <tr v-for="(transaction, index) in transactions" v-if="transactions.length > 0" :class="new Date(transaction.company_reports_expire) < new Date() ? 'bg-red-200 text-black' : 'odd:bg-white even:bg-gray-50'" class="data-employee" >
                             <td class="relative px-2 py-2" v-on:click="openPopup(transaction.id)" v-on:mouseleave="action = false" v-on:mouseover="action = transaction.id">
                                 <span v-show="action === transaction.id"
@@ -288,6 +313,7 @@
                             <td v-else class="px-2 py-2 text-red-700">Expired</td>
                             <td class="px-2 py-2">{{ formatDateTime(transaction.created_at) }}</td>
                             <!-- <td class="px-2 py-2">{{ my_date_format1(transaction.reports_expires) }}</td> -->
+                            <td class="px-2 py-2">{{ (transaction.plan_id !== 37 ) ? transaction.company_employees_count : transaction.companies_count }}</td>
                             <td class="px-2 py-2 text-blue-400 underline cursor-pointer" v-on:click="stOpenPopup(transaction.id)">{{ transaction.transaction_id }}</td>
                             <td class="px-2 py-2" v-bind:class="{ 'text-green-400': transaction.details === 'Successful', 'text-red-700': transaction.details !== 'Successful' }">{{ transaction.details }}</td>
                             <td class="px-2 py-2 text-blue-400 underline cursor-pointer" v-on:click="confirmDelete(transaction.sales_id)">Delete</td>
@@ -360,7 +386,8 @@ export default {
             popupUser: null,
             userD: false,
             stp: false,
-            Searchversion: 'Select'
+            Searchversion: 'Select',
+            asc: true
         }
     },
     created() {
@@ -445,9 +472,11 @@ export default {
 
             axios.post( app.url + '/admin/salesreporting', filters ).then((response) => { 
                 if( response.data.success ) {
+                    console.log( response.data.data );
                     app.transactions = response.data.data.transactions;
                     app.total = response.data.data.transactions.length;
                     app.totalSales = app.numberWithCommas(response.data.data.transactions.reduce((partialSum, a) => partialSum + a.amount, 0).toFixed(2));
+                    app.sortTableWebapp('date');
                 } else {
                     showErrorMessage("Something went wrong!!");
                 }
@@ -623,134 +652,56 @@ export default {
 
             return (month + 1) + '/' + (day) + '/' + (year) + ' ' + (hour) + ':' + (minute) + ':' + (seconds);
         },
-        /*
-        sortTableWebapp() {
-            let app = this;
-            app.viewLoader = true;
-            const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-            const comparer = (idx, asc) => (a, b) => ((v1, v2) => v1.replace("$", '') !== '' && v2.replace("$", '') !== '' && !isNaN(v1.replace("$", '')) && !isNaN(v2.replace("$", '')) ? v1.replace("$", '') - v2.replace("$", '') : v1.replace("$", '').toString().localeCompare(v2))(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
-
-            document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-                const table = th.closest('table');
-                Array.from(table.querySelectorAll('tr.data-employee'))
-                    .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-                    .forEach(tr => table.appendChild(tr));
-            })));
-            setTimeout(() => {
-                app.viewLoader = false;    
-            }, 1000);
-            
-        },
-        */
+       
         isDate(value) {
             return (new Date(value) !== "Invalid Date") && !isNaN(new Date(value));
         },
         
-        /*
-        sortTableWebapp() {
-            let app = this;
-            app.viewLoader = true;
-            const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-            const comparer = (idx, asc) => {
-            return (a, b) => {
-                const v1 = getCellValue(asc ? a : b, idx);
-                const v2 = getCellValue(asc ? b : a, idx);
-                if (this.isDate(v1) && this.isDate(v2)) {
-                return new Date(v1) - new Date(v2);
-                } else {
-                return v1.localeCompare(v2, undefined, { numeric: true });
-                }
-            };
-            };
-
-            document.querySelectorAll('th').forEach(th => {
-            th.removeEventListener('click', this.sortTableWebapp);
-            th.addEventListener('click', () => {
-                const table = th.closest('table');
-                Array.from(table.querySelectorAll('tr.data-employee'))
-                .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-                .forEach(tr => table.appendChild(tr));
-            });
-            });
-
-            setTimeout(() => {
-            app.viewLoader = false;
-            }, 1000);
-        },
-        */
-        sortTableWebapp(){
+       
+        sortTableWebapp(col){
+            this.custom_sort(col);
+            return false;
+           console.log("1111111111111SSSSQQQQ");
             this.viewLoader = true;
+            this.asc = false; // Initialize asc to false
+
             const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-            const comparer = (idx, asc) => (a, b) => ((v1, v2) => v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2) ) (getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
-
-            document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-                const table = th.closest('table');
-                Array.from(table.querySelectorAll('tr.data-employee'))
-                    .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-                    .forEach(tr => table.appendChild(tr) );
-            })));
-
-            setTimeout(() => {
-                this.viewLoader = false;
-            }, 1000);
-        },
-        sortTableDateWebapp() {
-            this.viewLoader = true;
-            const getCellValue = (tr, idx) => {
-                const cellValue = tr.children[idx].innerText || tr.children[idx].textContent;
-                return isNaN(Date.parse(cellValue)) ? cellValue.trim() : Date.parse(cellValue);
-            };
 
             const comparer = (idx, asc) => (a, b) => {
-                const cellValueA = getCellValue(asc ? a : b, idx);
-                const cellValueB = getCellValue(asc ? b : a, idx);
-
-                return isNaN(cellValueA) || isNaN(cellValueB) ?
-                    cellValueA.toString().localeCompare(cellValueB) :
-                    cellValueA - cellValueB;
+                const v1 = getCellValue(asc ? a : b, idx);
+                const v2 = getCellValue(asc ? b : a, idx);
+                return v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2);
             };
 
             document.querySelectorAll('th').forEach(th => {
                 th.addEventListener('click', () => {
                     const table = th.closest('table');
-                    const asc = !this.asc;
+                    const rows = Array.from(table.querySelectorAll('tr.data-employee'));
+                    
+                    // Get the index of the clicked header
                     const index = Array.from(th.parentNode.children).indexOf(th);
-
-                    Array.from(table.querySelectorAll('tr.data-employee'))
-                        .sort(comparer(index, asc))
-                        .forEach(tr => table.appendChild(tr));
-
-                    this.asc = asc;
+                    
+                    // Sort the rows
+                    const sortedRows = rows.sort(comparer(index, this.asc));
+                    
+                    // Append the sorted rows back to the table
+                    sortedRows.forEach(tr => table.appendChild(tr));
+                    
+                    // Toggle the sorting direction
+                    this.asc = !this.asc;
                 });
-
             });
 
             setTimeout(() => {
                 this.viewLoader = false;
             }, 1000);
-        },
-        
-       /*
-        sortTableWebapp() {
-            let app = this;
-            app.viewLoader = true;
-            const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-            
-            const comparer = (idx, asc) => (a, b) => ((v1, v2) => v1.replace("$", '') !== '' && v2.replace("$", '') !== '' && !isNaN(v1.replace("$", '')) && !isNaN(v2.replace("$", '')) ? v1.replace("$", '') - v2.replace("$", '') : v1.replace("$", '').toString().localeCompare(v2))(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
 
-            document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-                const table = th.closest('table');
-                Array.from(table.querySelectorAll('tr.data-employee'))
-                    .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-                    .forEach(tr => table.appendChild(tr));
-            })));
-            setTimeout(() => {
-                app.viewLoader = false;    
-            }, 1000);
-            
+    
         },
-        */
-        sortTableWebapp2() {
+
+        sortTableWebapp2(col) {
+            this.custom_sort(col);
+            return false;
             let app = this;
             app.viewLoader = true;
             
@@ -780,6 +731,188 @@ export default {
                 app.viewLoader = false;    
             }, 1000);
         },
+
+        getColTypeForIndex(index) {
+          const colTypes = ['string', 'string', 'string',
+            'string',
+            'string',
+            'string',
+            'num',
+            'num',
+            'num',
+            'string',
+            'date',
+            'num',
+          ]; // Example colType values for columns
+          return colTypes[index] || 'text'; // Return the colType for the column or default to 'text'
+        },
+        // 
+        custom_sort(colType = 'string') {
+            this.viewLoader = true;
+            // this.asc = false; // Start with ascending order
+
+            const getCellValue = (tr, idx) => tr.children[idx]?.innerText || tr.children[idx]?.textContent || '';
+
+            // Extract numerical value from strings like "1 Year", "$2", etc.
+            const extractNumber = (value) => {
+                const num = value.match(/[\d\.]+/); // This will extract the number part
+                return num ? parseFloat(num[0]) : NaN; // If a number is found, return it; otherwise, return NaN
+            };
+
+            // Parse the custom date format MM/DD/YYYY, h:m:s AM/PM
+            const extractDate = (value) => {
+                const dateParts = value.match(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}):(\d{2}):(\d{2}) (AM|PM)/);
+
+                if (dateParts) {
+                    let [_, month, day, year, hours, minutes, seconds, meridian] = dateParts;
+                    month = parseInt(month, 10) - 1;  // JavaScript months are 0-based
+                    day = parseInt(day, 10);
+                    year = parseInt(year, 10);
+                    hours = parseInt(hours, 10);
+                    minutes = parseInt(minutes, 10);
+                    seconds = parseInt(seconds, 10);
+
+                    // Convert 12-hour clock to 24-hour clock
+                    if (meridian === 'PM' && hours < 12) hours += 12;
+                    if (meridian === 'AM' && hours === 12) hours = 0;
+
+                    // Return a Date object
+                    return new Date(year, month, day, hours, minutes, seconds).getTime();
+                }
+                return null;
+            };
+
+            const comparer = (idx, asc, colType1) => (a, b) => {
+                const v1 = getCellValue(asc ? a : b, idx).trim();
+                const v2 = getCellValue(asc ? b : a, idx).trim();
+                // Handle different column types
+                if (colType1 == 'date') {
+                    // Check if both values are valid dates
+                    const date1 = extractDate(v1);
+                    const date2 = extractDate(v2);
+
+                    if (date1 !== null && date2 !== null) {
+                        return date1 - date2;
+                    }
+                } else if (colType1 == 'num') {
+                    // Try to extract numerical values from the strings
+                    const num1 = extractNumber(v1);
+                    const num2 = extractNumber(v2);
+                    if (!isNaN(num1) && !isNaN(num2)) {
+                        return num1 - num2;
+                    }
+                }
+
+                // Default to string comparison for 'string' type or fallback
+                return v1.localeCompare(v2);
+            };
+
+          document.querySelectorAll('th').forEach((th, idx) => {
+            // Check if the event listener is already attached
+            if (!th.hasListener) {
+              th.addEventListener('click', () => {
+                const currentColType = this.getColTypeForIndex(idx); // Define how to get the colType for each column
+
+                const table = th.closest('table');
+                const rows = Array.from(table.querySelectorAll('tr.data-employee'));
+                // Sort the rows
+                const sortedRows = rows.sort(comparer(idx, th.asc, currentColType));
+
+                // Create a DocumentFragment to optimize rendering
+                const fragment = document.createDocumentFragment();
+                sortedRows.forEach(tr => fragment.appendChild(tr));
+
+                // Append the fragment back to the table
+                table.querySelector('tbody').appendChild(fragment);
+
+                // Toggle sorting direction for the next click
+                th.asc = !th.asc;
+              });
+
+              // Mark that this th has an event listener
+              th.hasListener = true;
+            }
+          });
+
+
+          setTimeout(() => {
+                this.viewLoader = false;
+            }, 1000);
+
+            // console.log("Sorting function triggered");
+            // this.viewLoader = true;
+            // this.asc = true; // Start with ascending order
+
+            // const getCellValue = (tr, idx) => tr.children[idx]?.innerText || tr.children[idx]?.textContent || '';
+
+            // // Extract numerical value from strings like "1 Year", "$2", etc.
+            // const extractNumber = (value) => {
+            //     const num = value.match(/[\d\.]+/); // This will extract the number part
+            //     return num ? parseFloat(num[0]) : NaN; // If a number is found, return it; otherwise, return NaN
+            // };
+
+            // // Check if a string is a valid date and return its timestamp
+            // const extractDate = (value) => {
+            //     const date = Date.parse(value); // Returns NaN if not a valid date
+            //     return isNaN(date) ? null : date; // Return null if not a date
+            // };
+
+            // const comparer = (idx, asc, colType) => (a, b) => {
+            //     const v1 = getCellValue(asc ? a : b, idx).trim();
+            //     const v2 = getCellValue(asc ? b : a, idx).trim();
+
+            //     // Handle different column types
+            //     if (colType === 'date') {
+            //         // Check if both values are valid dates
+            //         const date1 = extractDate(v1);
+            //         const date2 = extractDate(v2);
+
+            //         if (date1 !== null && date2 !== null) {
+            //             return date1 - date2;
+            //         }
+            //     } else if (colType === 'num') {
+            //         // Try to extract numerical values from the strings
+            //         const num1 = extractNumber(v1);
+            //         const num2 = extractNumber(v2);
+
+            //         if (!isNaN(num1) && !isNaN(num2)) {
+            //             return num1 - num2;
+            //         }
+            //     }
+
+            //     // Default to string comparison for 'string' type or fallback
+            //     return v1.localeCompare(v2);
+            // };
+
+            // document.querySelectorAll('th').forEach((th, idx) => {
+            //     th.addEventListener('click', () => {
+            //         const table = th.closest('table');
+            //         const rows = Array.from(table.querySelectorAll('tr.data-employee'));
+
+            //         // Get the column type from the passed parameter
+            //         // const colType = columnTypes[idx];  // Use the column index to find the type
+
+            //         // Sort the rows
+            //         const sortedRows = rows.sort(comparer(idx, this.asc, colType));
+
+            //         // Create a DocumentFragment to optimize rendering
+            //         const fragment = document.createDocumentFragment();
+            //         sortedRows.forEach(tr => fragment.appendChild(tr));
+
+            //         // Append the fragment back to the table
+            //         table.querySelector('tbody').appendChild(fragment);
+
+            //         // Toggle sorting direction for the next click
+            //         this.asc = !this.asc;
+            //     });
+            // });
+
+            // setTimeout(() => {
+            //     this.viewLoader = false;
+            // }, 1000);
+        },
+
+        // 
 
         downloadCSVData() {
             const transactions = [...this.transactions];

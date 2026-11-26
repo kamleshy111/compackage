@@ -22,7 +22,8 @@
         </table>
       </div>
     </div>
-    <div class="text-xs text-black">* Additional reports available at $20 each.</div>
+    <div class="text-xs text-black">* All licensees must be real identifiable persons, and not anonymous or fictitious.</div>
+    <div class="text-xs text-black">** Any introductory coupon offers for 5 reports are only for one-time trial purchase.</div>
 
     
     <!-- Loader -->

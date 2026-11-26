@@ -129,9 +129,14 @@ class ManageUsersController extends Controller
         }
 
         $existingUser = User::where('email', $request->email)->first();
-        if ($existingUser) 
+        //if ($existingUser)
+        if ( !isset( $request->id) && $existingUser)
         {
-            // Email already exists, handle accordingly (perhaps show an error message)
+            // Email already exists, handle accordingly (perhaps show an error message) for Create user
+            return send_error(["msg" => "Email already exists."]);
+        }
+        else if( isset( $request->id) && $existingUser && $request->id != $existingUser->id ){
+            // Email already exists, handle accordingly (perhaps show an error message) for Update user
             return send_error(["msg" => "Email already exists."]);
         }
         
@@ -153,11 +158,13 @@ class ManageUsersController extends Controller
                 }
             } else {
                 $user->status = ! empty($request->status) ? 1 : 0;
+                $user->user_role = $existingUser->user_role;
             }
         } else {
             $user = new User();
             $send_password_reset_link = true;
             $user->status = !empty($request->status) ? 1 : 0;
+            $user->user_role = 3;
         }
 
         $user->name = $request->firstname . ' ' . $request->lastname;
@@ -165,7 +172,7 @@ class ManageUsersController extends Controller
         $user->lastname = $request->lastname;
         $user->email = $request->email;
         $user->username = $request->username;
-        $user->user_role = 3;
+        
         //$user->permission_type = 'user';
         $user->created_at = Carbon::now();
         $user->updated_at = Carbon::now();

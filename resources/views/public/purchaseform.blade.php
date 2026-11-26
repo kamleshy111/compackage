@@ -1,5 +1,24 @@
 @extends('layouts.public')
-
+@push('head')
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ $title ?? 'ComPackage Total Compensation Statement Software' }}",
+  "operatingSystem": "Web",
+  "applicationCategory": "BusinessApplication",
+  "description": "{{ $description ?? 'ComPackage allows employers to clearly show employees the total value of their compensation, including benefits.'}}",
+  "url": "{{ url()->current() }}",
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "USD",
+    "price": "499.00",
+    "availability": "https://schema.org/InStock",
+    "url": "{{ url()->current() }}"
+  }
+}
+</script>
+@endpush
 @section('content')
 <div class="container mx-auto px-3.5">
         @if(session('message'))

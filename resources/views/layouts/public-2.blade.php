@@ -140,13 +140,13 @@
             This is alert
         </div>
 
-        <!-- <div class="cta-header-banner row flex flex-wrap items-center w-full justify-center bg-[#03eb0a]">
-            <div class="cta-text font-medium text-2xl py-2 text-[#cd0000]">Our 16th Year Holiday SALE. Buy now and save up to 52%! Use coupon code: <span class="font-bold">HOLIDAY23</span> – Ends this week</div>
+        <!-- <div class="cta-header-banner row flex flex-wrap items-center w-full justify-center bg-[#c60f0f]">
+            <div class="cta-text font-medium text-2xl py-2 text-white">Our 17th Year Holiday SALE. Buy now and save up to 52%! Use coupon code: <span class="font-bold">HOLIDAY24</span></div>
         </div> -->
         
         <header>
             <div class="container mx-auto py-7 px-3.5 bgblack">
-            <p style="text-align: center;color: #ffffff;font-size: 20px;background: #ff6600;padding: 10px;margin-bottom: 15px;box-shadow: 0px 2px 8px 0px #a3a2a2;"><strong>NEW! Version 3.0</strong> includes Hourly Top Box Scores, Digital Delivery and Illuminative Metrics™ <a href="{{ asset('benefitspdf/New Features Flyer.pdf') }}" class="gradient-green rounded-lg px-4 py-2.5 font-bold text-lg" style="display: inline-block;">Get Details</a></p>
+            <!-- <p style="text-align: center;color: #ffffff;font-size: 20px;background: #ff6600;padding: 10px;margin-bottom: 15px;box-shadow: 0px 2px 8px 0px #a3a2a2;"><strong>NEW! Version 3.0</strong> includes Hourly Top Box Scores, Digital Delivery and Illuminative Metrics™ <a href="{{ asset('benefitspdf/New Features Flyer.pdf') }}" class="gradient-green rounded-lg px-4 py-2.5 font-bold text-lg" style="display: inline-block;">Get Details</a></p> -->
                 <div class="row flex flex-wrap -mx-4">
                     <div class="md:w-7/12 w-4/5 px-4">
                         <a href="{{route('home')}}"><img src="{{ asset('images/logo.png') }}" alt="Compackage" /></a>

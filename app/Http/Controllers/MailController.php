@@ -25,6 +25,9 @@ class MailController extends Controller
                 } else if( $type == 3 ) {
                     Mail::to(config('constants.emails.admin'))->send(new AdminCancelReminderNotification($sale->user_id, $sale, $type));
                     $msg = 'We Found Another Solution: Cancel Renewal Reminders.';
+                } else if( $type == 4 ) {
+                    Mail::to(config('constants.emails.admin'))->send(new AdminCancelReminderNotification($sale->user_id, $sale, $type));
+                    $msg = 'We plan to renew. Please turn off all reminder emails.';
                 }
         
                 $sale->send_reminder_30 = 0;

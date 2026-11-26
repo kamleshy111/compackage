@@ -16,7 +16,7 @@
                                 <th scope="col" class="px-2 py-3">{{benefit_type.sub_heading || 'Benefit Name'}}</th>
                                 <th v-if="benefit_type.id != 5" scope="col" class="px-2 py-3">Preferred Benefit Name</th>
                                 <th v-else scope="col" class="px-2 py-3">Custom Benefit Name</th>
-                                <!-- <th scope="col" class="align-top pt-0 py-3" >Co-Pay Benefit</th> -->
+                                <th scope="col" class="align-top pt-0 py-3" >Co-Pay Benefit</th>
                                 <!-- <th scope="col" class="px-2 py-3">Employer Contribution Default</th>
                                 <th scope="col" class="px-2 py-3">Employee Contribution Default</th> -->
                             </tr>
@@ -37,14 +37,22 @@
                                 </td>
                                  <td data-label="Preferred Benefit Name" class="px-2 py-2">
                                     <input v-model="benefit.additional_benefit_name" type="text" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control"/>
-                                    <select v-if="benefit.can_categorize" v-model="benefit.category_id" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control mt-3">
+                                    <!-- <select v-if="benefit.can_categorize" v-model="benefit.category_id" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control mt-3">
                                         <option value="0">{{'<Choose a Category>'}}</option>
                                         <option v-for="category in benefit.categories" :value="category.id" :key="category">{{category.name}}</option>
+                                    </select> -->
+                                    <select v-if="benefit.can_categorize" v-model="benefit.category_id" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control mt-3">
+                                        <option value="0">{{'<Choose a Category>'}}</option>
+                                        <option v-for="category in benefit.categories.filter(c => c.categorie_id === 0)" :value="category.id" :key="category.id">
+                                        {{ formatCategoryLabel(category,benefit.categories) }}
+                                        </option>
                                     </select>
+                                    
+
                                 </td>
-                                <!-- <td v-if="benefit.category_id != 8">
+                                <td v-if="benefit.category_id != 8">
                                     <input type="checkbox" name="employee_co_pay" v-model="benefit.employee_co_pay" :value="benefit.id" />
-                                </td> -->
+                                </td>
                                 <!-- <td data-label="Employee Contribution Default" class="px-2 py-2">
                                     <span class="flex items-center" v-if="benefit_type.id != 4 && benefit_type.id != 7">
                                         <span class="mr-3">$</span>
@@ -148,7 +156,9 @@ export default {
             axios.get(app.url + '/admin/get-benefit-types').then((response) => {
                 if( response.data.success ) {
                     app.benefit_types = response.data.data.benefitTypes;
-
+                    console.log("****************************DWS****************************");
+                    console.log(response.data.data.benefitTypes);
+                    console.log("****************************DWS****************************");
                     // Sorting the benefit based on order_sequence key
                     app.benefit_types.forEach((value, benefitTypesIndex) => {
                         app.sortByKey(benefitTypesIndex, 'order_sequence')
@@ -162,6 +172,10 @@ export default {
                 showErrorMessage(error);
                 app.viewLoader = false;
             }); 
+        },
+        formatCategoryLabel(parent, allCategories) {
+            const child = allCategories.find(c => c.categorie_id === parent.id);
+            return child ? `${parent.name} / ${child.name}` : parent.name;
         },
         saveBenefits(e) {
             let app = this;

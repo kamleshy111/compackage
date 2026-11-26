@@ -3,6 +3,9 @@
     <div>
         <a :href="url+'/benefitspdf/Compackage_Benefits.pdf'" target="_blank" class="inline-block mb-5 rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md">View These Benefit Ideas</a>
         <a :href="url+'/webapp/insurance-program-types'" class="inline-block mb-5 ml-4 rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md">Insurance Program Type</a>
+        <!--<a href="javascript:void(0)" v-on:click="exportSelectedBenefits()" class="inline-block mb-5 ml-4 rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md">Export Selected Benefits</a>-->
+        <!--<a href="javascript:void(0)" v-on:click="exportAllBenefits()" class="inline-block mb-5 ml-4 rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md">Export All Benefits</a>-->
+        <a href="javascript:void(0)" v-on:click="exportEmployeeLoaderTemplate()" class="inline-block mb-5 ml-4 rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md">Create Employee Loader Template</a>
         <form v-on:submit="saveBenefits" method="POST" enctype="multipart/form-data">
             <input v-if="permissions.update" type="submit" value="Save" class="cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md" />
             <div v-for="(benefit_type, benefit_type_index) in benefit_types" :key="benefit_type" class="mt-8">
@@ -77,11 +80,17 @@
                                 
                                  <td data-label="Additional Benefit Name" class="px-2 py-2">
                                     <input v-model="benefit.additional_benefit_name" type="text" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control"/>
-                                    <select v-if="benefit.can_categorize" v-model="benefit.category_id" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control mt-3">
+                                    <!-- <select v-if="benefit.can_categorize" v-model="benefit.category_id" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control mt-3">
                                         <option value="0">{{'<Choose a Category>'}}</option>
                                         <option v-for="category in benefit.categories" :value="category.id">{{category.name}}</option>
+                                    </select> -->
+                                    <select v-if="benefit.can_categorize" v-model="benefit.category_id" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control mt-3">
+                                        <option value="0">{{'<Choose a Category>'}}</option>
+                                        <option v-for="category in benefit.categories.filter(c => c.categorie_id === 0)" :value="category.id" :key="category.id">
+                                        {{ formatCategoryLabel(category,benefit.categories) }}
+                                        </option>
                                     </select>
-                                    
+
                                     <label for="bold" class="mr-4 pr-3" v-if="benefit_type.id == 7">
                                         <input type="checkbox" name="bold" v-model="benefit.bold" :value="benefit.bold" class="mr-1"/>
                                         <b class="">Bold</b>
@@ -209,6 +218,109 @@ export default {
         }
     },
     methods: {
+        exportEmployeeLoaderTemplate(){
+            let app = this;
+            app.viewLoader = true;
+            axios.post(app.url + '/webapp/benefits/exportselectedbenefits?request_type=selected').then((response) => {
+                if (response.data.success) {
+                    let tcount = 0;
+                    let csv1 = "First Name,Last Name,Address Line 1,Address Line 2,City,State,ZIP,Email,Supervisor,Descriptive Qualifier,Hourly,Digital Delivery,Digital Delivery ID";
+                    for (let user of response.data.data.benefits) {
+                        tcount++;
+                        console.log( tcount );
+                        //console.log(user.name);
+                        csv1 += `,"${user.pivot.benefit_custom_name !== null && user.pivot.benefit_custom_name !== '' ? user.pivot.benefit_custom_name : user.name}"`;
+                        if( user.pivot.employee_co_pay == 1 ){
+                            csv1 += `,"${user.pivot.benefit_custom_name !== null && user.pivot.benefit_custom_name !== '' ? 'Employee '+user.pivot.benefit_custom_name : 'Employee '+user.name}"`;
+                        }
+                    }
+                    console.log( tcount );
+                    csv1 += `\n`;
+		            this.viewLoader = false;
+		            const anchor = document.createElement('a');
+		            anchor.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv1);
+		            anchor.target = '_blank';
+		            anchor.download = 'compackage-template.csv';
+		            anchor.click();
+                	showSuccessMessage("Success!!");
+                }
+                else {
+                    showErrorMessage("Something went wrong!!");
+                }
+                app.viewLoader = false;
+            }).catch((error) => {
+                app.viewLoader = false;
+                showErrorMessage(error);
+            });
+        },
+        formatCategoryLabel(parent, allCategories) {
+            const child = allCategories.find(c => c.categorie_id === parent.id);
+            return child ? `${parent.name} / ${child.name}` : parent.name;
+        },
+        exportAllBenefits(){
+            let app = this;
+            app.viewLoader = true;
+            axios.post(app.url + '/webapp/benefits/exportselectedbenefits?request_type=all').then((response) => {
+                if (response.data.success) {
+                    let csv1 = "Benefit Name,Preferred Benefit Name,Co-Pay Benefit\n";
+                    for (let user of response.data.data.benefits) {
+                        csv1 += `"${user.name !== null ? user.name : ""}",`;
+                        csv1 += `"${user.pivot.benefit_custom_name !== null ? user.pivot.benefit_custom_name : ""}",`;
+                        csv1 += `"${user.pivot.employee_co_pay !== null ? user.pivot.employee_co_pay : ""}",`;
+                        csv1 += `\n`;
+                    }
+                    var currentdate = new Date();
+		            var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate();
+		            this.viewLoader = false;
+		            const anchor = document.createElement('a');
+		            anchor.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv1);
+		            anchor.target = '_blank';
+		            anchor.download = 'All Benefits ' + datetime + '.csv';
+		            anchor.click();
+
+                	showSuccessMessage("Success!!");
+                }
+                else {
+                    showErrorMessage("Something went wrong!!");
+                }
+                app.viewLoader = false;
+            }).catch((error) => {
+                app.viewLoader = false;
+                showErrorMessage(error);
+            });
+        },
+        exportSelectedBenefits(){
+            let app = this;
+            app.viewLoader = true;
+            axios.post(app.url + '/webapp/benefits/exportselectedbenefits?request_type=selected').then((response) => {
+                if (response.data.success) {
+                    let csv1 = "Benefit Name,Preferred Benefit Name,Co-Pay Benefit\n";
+                    for (let user of response.data.data.benefits) {
+                        csv1 += `"${user.name !== null ? user.name : ""}",`;
+                        csv1 += `"${user.pivot.benefit_custom_name !== null ? user.pivot.benefit_custom_name : ""}",`;
+                        csv1 += `"${user.pivot.employee_co_pay !== null ? user.pivot.employee_co_pay : ""}",`;
+                        csv1 += `\n`;
+                    }
+                    var currentdate = new Date();
+		            var datetime = currentdate.getFullYear() + "-" + (currentdate.getMonth() + 1) + "-" + currentdate.getDate();
+		            this.viewLoader = false;
+		            const anchor = document.createElement('a');
+		            anchor.href = 'data:text/csv;charset=utf-8,%EF%BB%BF' + encodeURIComponent(csv1);
+		            anchor.target = '_blank';
+		            anchor.download = 'Selected Benefits ' + datetime + '.csv';
+		            anchor.click();
+
+                	showSuccessMessage("Success!!");
+                }
+                else {
+                    showErrorMessage("Something went wrong!!");
+                }
+                app.viewLoader = false;
+            }).catch((error) => {
+                app.viewLoader = false;
+                showErrorMessage(error);
+            });
+        },
         getBenefitsTypes() {
             let app = this;
             app.viewLoader = true;
@@ -292,7 +404,7 @@ export default {
             }
 
             axios.post( app.url + '/webapp/benefits/store', { benefits: benefit_types_arr} ).then( (response) => {
-                //console.log(response.data.success);
+                console.log(response.data.success);
                 if(response.data.success) {
                     showSuccessMessage(response.data.data.msg);
                 } else {

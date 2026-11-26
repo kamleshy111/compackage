@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
@@ -88,9 +89,8 @@ class LoginController extends Controller
             'email' => 'required',
             'password' => 'required',
         ]);
-
-        // $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'username' : 'username';
+        $fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        //$fieldType = filter_var($request->email, FILTER_VALIDATE_EMAIL) ? 'username' : 'username';
         if(auth()->attempt(array($fieldType => $input['email'], 'password' => $input['password']), $remember))
         {
             /**
@@ -101,7 +101,8 @@ class LoginController extends Controller
             $loginlog->ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : "";
             $loginlog->save();
             return redirect()->route('login');
-        }else{
+        }
+        else{
             return redirect()->route('login')
                 ->withErrors(['Incorrect username or password.']);
         }

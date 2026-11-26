@@ -162,6 +162,12 @@ class CompanyController extends Controller
         $company->color2                        = ! empty($request->color2)? $request->color2 : '';
         $company->color3                        = ! empty($request->color3)? $request->color3 : '';
         $company->color4                        = ! empty($request->color4)? $request->color4 : '';
+        $company->color5                        = ! empty($request->color5)? $request->color5 : '';
+        $company->color1_1                      = ! empty($request->color1_1)? $request->color1_1 : '#000000';
+        $company->color2_2                      = ! empty($request->color2_2)? $request->color2_2 : '#000000';
+        $company->color3_3                      = ! empty($request->color3_3)? $request->color3_3 : '#000000';
+        $company->color4_4                      = ! empty($request->color4_4)? $request->color4_4 : '#000000';
+        $company->color5_5                      = ! empty($request->color5_5)? $request->color5_5 : '#000000';
         $company->base_pay_heading              = ! empty($request->base_pay_heading)? $request->base_pay_heading : '';
         $company->other_cash_heading            = ! empty($request->other_cash_heading)? $request->other_cash_heading : '';
         $company->company_paid_heading          = ! empty($request->company_paid_heading)? $request->company_paid_heading : '';
@@ -193,6 +199,8 @@ class CompanyController extends Controller
         $company->base_pay_hourly_heading               =   !empty($request->base_pay_hourly_heading) ? $request->base_pay_hourly_heading : '';
         $company->other_cash_hourly_heading             =   !empty($request->other_cash_hourly_heading) ? $request->other_cash_hourly_heading : '';
         $company->company_paid_hourly_heading           =   !empty($request->company_paid_hourly_heading) ? $request->company_paid_hourly_heading : '';
+        $company->company_total_wages_hr_heading           =   !empty($request->company_total_wages_hr_heading) ? $request->company_total_wages_hr_heading : '';
+        $company->company_total_wages_heading           =   !empty($request->company_total_wages_heading) ? $request->company_total_wages_heading : '';
         $company->total_compensation_hourly_heading     =   !empty($request->total_compensation_hourly_heading) ? $request->total_compensation_hourly_heading : '';
         $company->welfare_benefits_total_heading        =   !empty($request->welfare_benefits_total_heading) ? $request->welfare_benefits_total_heading : '';
         $company->time_off_benefits_total_heading       =   !empty($request->time_off_benefits_total_heading) ? $request->time_off_benefits_total_heading : '';
@@ -387,6 +395,12 @@ class CompanyController extends Controller
         $company->color2                        = ! empty($request->color2)? $request->color2 : '';
         $company->color3                        = ! empty($request->color3)? $request->color3 : '';
         $company->color4                        = ! empty($request->color4)? $request->color4 : '';
+        $company->color5                        = ! empty($request->color5)? $request->color5 : '';
+        $company->color1_1                      = ! empty($request->color1_1)? $request->color1_1 : '#000000';
+        $company->color2_2                      = ! empty($request->color2_2)? $request->color2_2 : '#000000';
+        $company->color3_3                      = ! empty($request->color3_3)? $request->color3_3 : '#000000';
+        $company->color4_4                      = ! empty($request->color4_4)? $request->color4_4 : '#000000';
+        $company->color5_5                      = ! empty($request->color5_5)? $request->color5_5 : '#000000';
         $company->base_pay_heading              = ! empty($request->base_pay_heading)? $request->base_pay_heading : '';
         $company->other_cash_heading            = ! empty($request->other_cash_heading)? $request->other_cash_heading : '';
         $company->company_paid_heading          = ! empty($request->company_paid_heading)? $request->company_paid_heading : '';
@@ -419,6 +433,8 @@ class CompanyController extends Controller
         $company->base_pay_hourly_heading               =   !empty($request->base_pay_hourly_heading) ? $request->base_pay_hourly_heading : '';
         $company->other_cash_hourly_heading             =   !empty($request->other_cash_hourly_heading) ? $request->other_cash_hourly_heading : '';
         $company->company_paid_hourly_heading           =   !empty($request->company_paid_hourly_heading) ? $request->company_paid_hourly_heading : '';
+        $company->company_total_wages_hr_heading           =   !empty($request->company_total_wages_hr_heading) ? $request->company_total_wages_hr_heading : '';
+        $company->company_total_wages_heading           =   !empty($request->company_total_wages_heading) ? $request->company_total_wages_heading : '';
         $company->total_compensation_hourly_heading     =   !empty($request->total_compensation_hourly_heading) ? $request->total_compensation_hourly_heading : '';
         
         $company->welfare_benefits_total_heading        =   !empty($request->welfare_benefits_total_heading) ? $request->welfare_benefits_total_heading : '';

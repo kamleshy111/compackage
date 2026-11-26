@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\PDFReportController;
 use App\Models\Sales\Sales;
 
+use App\Jobs\GenerateCombinedPdfReport;
+use App\Models\PdfJob;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 class EmployeeController extends Controller
 {
     /**
@@ -81,6 +87,61 @@ class EmployeeController extends Controller
         $employee = auth()->user()->employeesgetall();
 
         return view('webapp.employee.index', compact('employees', 'permissions', 'supervisors', 'pagination', 'companies', 'company', 'employee', 'empcount', 'activeempcount', 'inactiveempcount', 'totalReport', 'final_commited_employee_count', 'totaladditionalReport'));
+    }
+
+    public function getAllCompanyEmployees(Request $request)
+    {
+        $paginationLimit = $request->limit;
+        $company = Company::find( auth()->user()->currentSessionCompany() );
+        $employees = $company->employees();
+        $employees = $employees->get();
+        $return_emp_data = [];
+        $count_emp = 0;
+        $return_data_head = array(
+                                'First Name','Last Name','Address Line 1','Address Line 2','City','State','ZIP','Email','Supervisor','Descriptive Qualifier','Hourly','Digital Delivery','Digital Delivery ID','Include Middle Wages Top Box Score
+'
+                                );
+        foreach ($employees as $emp_val ){
+            
+            $return_emp_data_temp = array(
+                                'firstname' => $emp_val->firstname,
+                                'lastname' => $emp_val->lastname,
+                                'address_line_1' => $emp_val->address_line_1,
+                                'address_line_2' => $emp_val->address_line_2,
+                                'city' => $emp_val->city,
+                                'state' => $emp_val->state,
+                                'zip' => $emp_val->zip,
+                                'email' => $emp_val->email,
+                                'supervisor' => $emp_val->supervisor,
+                                'mid_year_event' => $emp_val->mid_year_event,
+                                'hourly_pay_functionality' => $emp_val->hourly_pay_functionality,
+                                'is_digital_delivery' => $emp_val->is_digital_delivery,
+                                'digital_delivery_value' => $emp_val->digital_delivery_value,
+                                'is_middle_wages_top_box' => $emp_val->is_middle_wages_top_box,
+                                );
+            
+            $results = DB::table('benefits as ben')
+                ->join('benefit_employee as empb', 'ben.id', '=', 'empb.benefit_id')
+                ->select('ben.name', 'empb.employer_default_value')
+                ->where('empb.employee_id', $emp_val->id)
+                ->get();
+            
+            foreach ($results as $result) {
+                if( $count_emp == 0 ){
+                    $return_data_head[] = $result->name;
+                }
+                $benefit_name = str_replace(" ", "_", $result->name);
+                if( $benefit_name == '401K'){
+                    $benefit_name = "four_zero_one_k";
+                }
+                $return_emp_data_temp[$benefit_name] = $result->employer_default_value;
+            }
+            $return_emp_data[]= $return_emp_data_temp;
+            $count_emp++;            
+        }
+        
+        return send_success(["employees" => $return_emp_data,"head_data" => $return_data_head ]);
+        
     }
 
     public function getDefaultCompanyEmployees(Request $request) {
@@ -341,6 +402,7 @@ class EmployeeController extends Controller
         $employee->is_digital_delivery = $request->is_digital_delivery;
         $employee->digital_delivery_value = $request->digital_delivery_value;
         $employee->hourly_pay_functionality = $request->hourly_pay_functionality;
+        $employee->is_middle_wages_top_box = $request->is_middle_wages_top_box;
         $employee->supervisor = $request->supervisor;
         $employee->employee_id = $request->employee_id;
         $employee->saved_since_added = ! empty($request->saved_since_added)? $request->saved_since_added : 1;
@@ -567,12 +629,13 @@ class EmployeeController extends Controller
 
         // Return success and error.
         if( ! $benefitTypes->isEmpty() ) {
-            return send_success([ "benefitTypes" => $benefitTypes, "benefits_from" => $benefits_from ]);
+            return send_success([ "test_dws" => "Developer", "benefitTypes" => $benefitTypes, "benefits_from" => $benefits_from ]);
         } else {
             return send_error(['msg' => 'Something went wrong.']);
         }
     }
 
+    
     public function getCompanyEmployees($company_id)
     {
         $company = Company::findOrFail( $company_id );
@@ -643,12 +706,15 @@ class EmployeeController extends Controller
         } else if( ! empty( $employee_id ) ) {
             $employee = Employee::find($employee_id);
         }
-
+        $exclude_emp = false;
+        if( isset( $_GET['exclude_emp'] ) && !empty( $_GET['exclude_emp'] ) && $_GET['exclude_emp'] == 'true' ) {
+            $exclude_emp = true;
+        }
         if( empty( $employee ) ) {
             return redirect()->back();
         }
 
-        (new PDFReportController)->generate_report( $employee->id, 'show' );
+        (new PDFReportController)->generate_report( $employee->id, 'show', 'no', $exclude_emp );
         
         return redirect()->back();
         
@@ -911,9 +977,13 @@ class EmployeeController extends Controller
                 if( $company->canCompanyPrintReports() ) {
                     if (!empty($company)) {
                         /** We are including only active and committed employees */
-                        if( $employee->final_commited && ($employee->inactive == 0) || ($company->getActivePlan() == 'unlimited' || $company->getActivePlan() == 'professional') )
+                        if( $employee->final_commited && ($employee->inactive == 0) || ($company->getActivePlan() == 'unlimited' || $company->getActivePlan() == 'professional' || $company->getActivePlan() == 'standard') )
                         {
-                            $data['allrecords'] = $pdfController->_individual_pdf_report_combined_pdf($company, $employee, $type);
+                            $exclude_emp = false;
+                            if( isset( $request->exclude_emp ) && !empty($request->exclude_emp) && $request->exclude_emp == 'true' ) {
+                                $exclude_emp = true;
+                            }
+                            $data['allrecords'] = $pdfController->_individual_pdf_report_combined_pdf($company, $employee, $type, $exclude_emp);
                         }
                     }
                     return send_success($data);
@@ -945,6 +1015,192 @@ class EmployeeController extends Controller
             header("Content-type: application/pdf");
             header("Content-Disposition: attachment; filename=combined.pdf");
             echo $pdf->stream();
+        }
+    }
+    public function queueCombinedReport(Request $request)
+    {
+        $request->validate([
+            'employee_ids' => 'required|array',
+            'employee_ids.*' => 'exists:employees,id',
+            'exclude_emp' => 'boolean'
+        ]);
+
+        $employeeIds = $request->employee_ids;
+        $excludeEmp = $request->exclude_emp ?? false;
+        $userId = Auth::id();
+        
+        // Generate unique job ID
+        $jobId = Str::uuid()->toString();
+        
+        // Create job record in database
+        $pdfJob = PdfJob::create([
+            'job_id' => $jobId,
+            'user_id' => $userId,
+            'total_employees' => count($employeeIds),
+            'processed_employees' => 0,
+            'status' => 'pending'
+        ]);
+
+        // Dispatch the job to queue
+        //GenerateCombinedPdfReport::dispatch($employeeIds, $excludeEmp, $jobId, $userId);
+        GenerateCombinedPdfReport::dispatch($jobId, $employeeIds, $userId, $excludeEmp);
+
+        return response()->json([
+            'success' => true,
+            'job_id' => $jobId,
+            'message' => 'Report generation started',
+            'employee_count' => count($employeeIds)
+        ]);
+    }
+
+    public function checkJobStatus($jobId)
+    {
+        $pdfJob = PdfJob::where('job_id', $jobId)->first();
+        
+        if (!$pdfJob) {
+            return response()->json([
+                'error' => 'Job not found'
+            ], 404);
+        }
+        
+        $response = [
+            'status' => $pdfJob->status,
+            'total' => $pdfJob->total_employees,
+            'processed' => $pdfJob->processed_employees,
+            'percentage' => $pdfJob->total_employees > 0 
+                ? round(($pdfJob->processed_employees / $pdfJob->total_employees) * 100) 
+                : 0
+        ];
+        
+        // if ($pdfJob->status === 'completed' && $pdfJob->file_path) {
+        //     // Return public URL instead of download route
+        //     $response['pdf_url'] = asset('storage/' . $pdfJob->file_path);
+        // }
+        if ($pdfJob->status === 'completed' && $pdfJob->file_path) {
+            $response['pdf_url'] = url('/webapp/stream-combined-report/' . $jobId);
+        }
+        
+        if ($pdfJob->status === 'failed') {
+            $response['error'] = $pdfJob->error_message;
+        }
+        
+        return response()->json($response);
+    }
+
+    public function downloadCombinedReport($jobId)
+    {
+        $pdfJob = PdfJob::where('job_id', $jobId)->first();
+        
+        if (!$pdfJob || $pdfJob->status !== 'completed') {
+            abort(404, 'Report not found or not ready');
+        }
+        
+        if (!Storage::exists($pdfJob->file_path)) {
+            abort(404, 'File not found');
+        }
+        
+        return Storage::download($pdfJob->file_path, 'COMPackage-Combined-Report.pdf');
+    }
+    // public function streamCombinedReport($jobId)
+    // {
+    //     $pdfJob = PdfJob::where('job_id', $jobId)->first();
+        
+    //     if (!$pdfJob || $pdfJob->status !== 'completed') {
+    //         abort(404, 'Report not found or not ready');
+    //     }
+        
+    //     $filePath = storage_path('app/public/' . $pdfJob->file_path);
+        
+    //     if (!file_exists($filePath)) {
+    //         abort(404, 'File not found');
+    //     }
+        
+    //     return response()->file($filePath, [
+    //         'Content-Type' => 'application/pdf',
+    //         'Content-Disposition' => 'inline; filename="COMPackage-Combined-Report.pdf"'
+    //     ]);
+    // }
+    // public function streamCombinedReport($jobId)
+    // {
+    //     $pdfJob = PdfJob::where('job_id', $jobId)->first();
+        
+    //     if (!$pdfJob || $pdfJob->status !== 'completed' || !$pdfJob->file_path) {
+    //         abort(404, 'Report not found or not ready');
+    //     }
+        
+    //     $filePath = storage_path('app/public/' . $pdfJob->file_path);
+        
+    //     if (!file_exists($filePath)) {
+    //         abort(404, 'File not found');
+    //     }
+        
+    //     // Delete the PdfJob record from database
+    //     $pdfJob->delete();
+        
+    //     // Use download() instead of file() - this supports deleteFileAfterSend
+    //     return response()->download($filePath, 'combined.pdf', [
+    //         'Content-Type' => 'application/pdf'
+    //     ])->deleteFileAfterSend(true);
+    // }
+    public function streamCombinedReport($jobId)
+    {
+        $pdfJob = PdfJob::where('job_id', $jobId)->first();
+
+        if (!$pdfJob || $pdfJob->status !== 'completed' || !$pdfJob->file_path) {
+            abort(404, 'Report not found or not ready');
+        }
+
+        $filePath = storage_path('app/public/' . $pdfJob->file_path);
+
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found');
+        }
+
+        // Atomically claim this job so a concurrent duplicate request can't
+        // also pass this check while the file/row are still present
+        $claimed = PdfJob::where('job_id', $jobId)
+            ->where('status', 'completed')
+            ->update(['status' => 'delivered']);
+
+        if (!$claimed) {
+            abort(404, 'Report already delivered');
+        }
+
+        $pdfJob->delete();
+
+        return response()->download($filePath, 'combined.pdf', [
+            'Content-Type' => 'application/pdf'
+        ])->deleteFileAfterSend(true);
+    }
+    public function cancelJob($jobId)
+    {
+        try {
+            $pdfJob = PdfJob::where('job_id', $jobId)->first();
+            
+            if (!$pdfJob) {
+                return response()->json(['success' => false, 'message' => 'Job not found']);
+            }
+            
+            // Only cancel if not already completed
+            if ($pdfJob->status === 'completed') {
+                return response()->json(['success' => false, 'message' => 'Job already completed']);
+            }
+            
+            // Mark as cancelled
+            $pdfJob->update([
+                'status' => 'cancelled',
+                'error_message' => 'Cancelled by user'
+            ]);
+            
+            // Delete any partial files
+            if ($pdfJob->file_path && Storage::disk('public')->exists($pdfJob->file_path)) {
+                Storage::disk('public')->delete($pdfJob->file_path);
+            }
+            
+            return response()->json(['success' => true, 'message' => 'Job cancelled']);
+            
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()]);
         }
     }
 }

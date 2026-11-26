@@ -34,6 +34,11 @@
         We Found Another Solution: Cancel Renewal Reminders
     </a>
 </p>
+<p style="color: #000000; font-size: 12px; font-family:Arial, Helvetica, sans-serif; margin: 10px 5px 5px 10px;">
+    <a href="{{route('cancelReminders', ['key' => $sale->id, 'type' => 4])}}">
+        We plan to renew. Please turn off all reminder emails
+    </a>
+</p>
 <br>
 
 Sincerely,<br><br>

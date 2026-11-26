@@ -61,7 +61,7 @@
         <div class="mb-3">
           <div class="rounded-t-lg gradient-lgreen w-full text-center py-1 px-1.5 text-lg text-white font-bold inline-block">Additional Report License(s)</div>
           <div class="p-2 bg-white rounded-b-lg">
-            <p class="pb-3 font-serif text-[13px] text-dgray">If you reach the employee limit for the Report Package you purchase, you can purchase additional report licenses for $20.00 per report license. The license for the additional benefit statement reports will expire on the same anniversary date as the base package.</p>
+            <p class="pb-3 font-serif text-[13px] text-dgray">If you reach the employee limit for the Report Package you purchase, you can purchase additional report licenses for $149 for an additional 5 licenses. If you need to correct a committed report due to marriage or clerical error, contact <a href="mailto:support@compackage.com" class="text-greendarkclr underline hover:no-underline">support@compackage.com</a></p>
           </div>
         </div>
         <div class="mb-3">
@@ -82,7 +82,7 @@
         <div class="p-2 bg-white rounded-b-lg">
           <img :src="url+'/images/joe-blattner.jpg'" alt="Joe Blattner" class="mb-3 mx-auto block">
           <p class="pb-3 font-serif text-[13px] text-dgray">COMPackage is a second business venture of Joseph R. Blattner and is designed to improve the recognition by employees of most any sized companies of the value of their total compensation package. COMPackage's total compensation statement software goes well beyond what other reporting services offer by vastly increasing the number of benefits or perks that can easily be reported, creating a more compelling total compensation statement.</p>
-          <p class="font-serif text-[13px] text-dgray">Blattner is active in the Young Presidents Organization (YPO), and has served as Chairman and Director of the Auberle Development Corp, a home for children-at-risk near Pittsburgh. He and his wife, Jane, and two rescued dogs (Pepe & Pancho) live on a golf course community in Southwest Pennsylvania, where he currently serves as the President of the 490 resident Homeowner Association.</p>
+          <p class="font-serif text-[13px] text-dgray">Blattner is active in the Young Presidents Organization (YPO) and has served as Chairman and Director of the Auberle Development Corp, a home for children-at-risk near Pittsburgh. He and his wife, Jane live on a golf course community in Southwest Pennsylvania, where he currently serves as the President of the 490 resident Homeowner Association.</p>
         </div>
     </div>
     <div :class="(croute == '/employee-benefit-resources/employee-benefits-cost' || croute =='/employee-benefit-resources/reducing-employee-turnover' || croute == '/employee-benefit-resources/hidden-employee-compensation-perks') ? 'block' : 'hidden'">

@@ -71,7 +71,6 @@ class CommonController extends Controller
 						}
 
 						$permission = $permission->first();
-
 						// If user have permission then, allow the user and create a session with route permission else throw error with code
 						if ( ! empty($permission)) {
 							// Check route permission action_type and create session.

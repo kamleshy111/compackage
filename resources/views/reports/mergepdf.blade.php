@@ -216,7 +216,7 @@
                                     }
                                     else
                                     {
-                                        $value = $benefit['employer_default_value'];
+                                        $value = number_format($benefit['employer_default_value'], 0, '.', ',');
                                     }
                                 } else {
                                     $left_rows['employer'][$count]['symbol'] = $company['currency_symbol'];
@@ -287,7 +287,8 @@
                                 }
                                 else
                                 {
-                                    $value = $benefit['employer_default_value'];
+                                    $value = number_format($benefit['employer_default_value'], 0, '.', ',');
+
                                 }
                             } else {
                                 $right_rows['employer'][$count]['symbol'] = $company['currency_symbol'];
@@ -352,7 +353,7 @@
                                 }
                                 else
                                 {
-                                    $value = $benefit['employer_default_value'];
+                                    $value = number_format($benefit['employer_default_value'], 0, '.', ',');
                                 }
                             } else {
                                 $right_rows['employer'][$count]['symbol'] = $company['currency_symbol'];
@@ -654,13 +655,7 @@
                 </td>
                 <td width="55%" style="padding-right:30px;padding-left:35px;">
                     <div style="font-family: Arial, Helvetica, sans-serif;color:#16622e; font-size:10.5pt;line-height:1;">
-                        <b>
-                            {{ !empty($company['ending_date_label']) ? $company['ending_date_label'] : 'For Year Ending' }}
-                            {{ $company['month'] }}
-                            {{ !empty($company['day']) ? $company['day'] . ',' : '' }}
-                            {{ $company['year'] }}
-                        </b>
-
+                    <b>{{ !empty($company['ending_date_label']) ? $company['ending_date_label'] : 'For Year Ending' }}  {{$company['month']}} {{$company['day']}}, {{$company['year']}}</b>
                         <br />
                         <b>Your Total Compensation Report</b>
                     </div>
@@ -712,7 +707,7 @@
                         <div style="margin-top: 10px;display: inline-block;text-align: center;padding: 0 15px;width: 100%;">
                             <div style="text-align: center;border: 1px solid #000;display: inline-block;vertical-align: middle;width:140px">
                                 <div style="border-bottom: 1px solid #000;padding: 2px 10px;background-color: {{$company['color3']}};">
-                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;">
+                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color:{{$company['color3_3']}}">
                                         <strong>{{( ! empty($company['base_pay_hourly_heading']) ? $company['base_pay_hourly_heading']: 'Base Hourly')}}</strong>
                                     </span>
                                 </div>
@@ -728,8 +723,8 @@
                             <div style="padding: 0 10px;font-weight: 900;font-size: 20px;display: inline-block;vertical-align: middle;">+</div>
                             <div style="text-align: center;border: 1px solid #000;display: inline-block;vertical-align: middle;width:140px">
                                 <div style="border-bottom: 1px solid #000;padding: 2px 10px;background-color: {{$company['color2']}};">
-                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;">
-                                        <strong>{{( ! empty($company['other_cash_hourly_heading']) ? $company['other_cash_hourly_heading']: 'Other Income')}}</strong>
+                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color:{{$company['color2_2']}}">
+                                        <strong>{{( ! empty($company['other_cash_hourly_heading']) ? $company['other_cash_hourly_heading']: 'Other Income/hr')}}</strong>
                                     </span>
                                 </div>
                                 <div style="padding: 0px 10px;font-family: Arial, Helvetica, sans-serif;">
@@ -745,7 +740,7 @@
 
                             <div style="text-align: center;border: 1px solid #000;display: inline-block;vertical-align: middle;width:140px">
                                 <div style="border-bottom: 1px solid #000;padding: 2px 10px;background-color: {{$company['color2']}};">
-                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;">
+                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color:{{$company['color2_2']}}">
                                         <strong>{{( ! empty($company['company_paid_hourly_heading']) ? $company['company_paid_hourly_heading']: 'Benefits/hr')}}</strong>
                                     </span>
                                 </div>
@@ -760,9 +755,9 @@
 
                             <div style="text-align: center;border: 1px solid #000;display: inline-block;vertical-align: middle;width:140px">
                                 <div style="border-bottom: 1px solid #000;padding: 2px 10px;background-color: {{$company['color4']}};">
-                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color: #fff;"><strong>{{( ! empty($company['total_compensation_hourly_heading']) ? $company['total_compensation_hourly_heading']: 'Total Pkg./hr')}}</strong></span>
+                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color: {{$company['color4_4']}};"><strong>{{( ! empty($company['total_compensation_hourly_heading']) ? $company['total_compensation_hourly_heading']: 'Total Pkg./hr')}}</strong></span>
                                 </div>
-                                <div style="padding: 0px 10px;font-family: Arial, Helvetica, sans-serif;color: #7850a0;">
+                                <div style="padding: 0px 10px;font-family: Arial, Helvetica, sans-serif;">
                                     <span style="font-size: 14px;">
                                         <strong>
                                             {{$company['currency_symbol']}}{{number_format(($_cpb_rate_10 + $_ocb_rate_10 + $_bt_10_141_rate),2)}}/hr
@@ -782,7 +777,7 @@
                         <div style="margin-top: 10px;display: inline-block;text-align: center;padding: 0 15px;width: 100%;">
                             <div style="text-align: center;border: 1px solid #000;display: inline-block;vertical-align: middle;width:140px">
                                 <div style="border-bottom: 1px solid #000;padding: 2px 10px;background-color: {{$company['color3']}};">
-                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;">
+                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color:{{$company['color3_3']}}">
                                         <strong>{{( ! empty($company['base_pay_heading']) ? $company['base_pay_heading']: 'Base Pay')}}</strong>
                                     </span>
                                 </div>
@@ -797,7 +792,7 @@
                             <div style="padding: 0 10px;font-weight: 900;font-size: 20px;display: inline-block;vertical-align: middle;">+</div>
                             <div style="text-align: center;border: 1px solid #000;display: inline-block;vertical-align: middle;width:140px">
                                 <div style="border-bottom: 1px solid #000;padding: 2px 10px;background-color: {{$company['color2']}};">
-                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;">
+                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color:{{$company['color2_2']}}">
                                         <strong>{{( ! empty($company['other_cash_heading']) ? $company['other_cash_heading']: 'Other Income ')}}</strong>
                                     </span>
                                 </div>
@@ -814,7 +809,7 @@
 
                             <div style="text-align: center;border: 1px solid #000;display: inline-block;vertical-align: middle;width:140px">
                                 <div style="border-bottom: 1px solid #000;padding: 2px 10px;background-color: {{$company['color2']}};">
-                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;">
+                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color:{{$company['color2_2']}}">
                                         <strong>{{( ! empty($company['company_paid_heading']) ? $company['company_paid_heading']: 'Company Paid Benefits')}}</strong>
                                     </span>
                                 </div>
@@ -829,9 +824,9 @@
 
                             <div style="text-align: center;border: 1px solid #000;display: inline-block;vertical-align: middle;width:140px">
                                 <div style="border-bottom: 1px solid #000;padding: 2px 10px;background-color: {{$company['color4']}};">
-                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color: #fff;"><strong>{{( ! empty($company['total_compensation_heading']) ? $company['total_compensation_heading']: 'Total Compensation')}}</strong></span>
+                                    <span style="display: block;font-size: 10px;font-family: Arial, Helvetica, sans-serif;color: {{$company['color4_4']}};"><strong>{{( ! empty($company['total_compensation_heading']) ? $company['total_compensation_heading']: 'Total Compensation')}}</strong></span>
                                 </div>
-                                <div style="padding: 0px 10px;font-family: Arial, Helvetica, sans-serif;color: #7850a0;">
+                                <div style="padding: 0px 10px;font-family: Arial, Helvetica, sans-serif;">
                                     <span style="font-size: 14px;">
                                         <strong>
                                             {{$company['currency_symbol']}}{{ number_format( $employer_benefits_total ,0) }}
@@ -912,7 +907,7 @@
                                     <tr>
                                         <td bgcolor="#000000" align="center" height="20">
                                             <font color="#FFFFFF" style="font-size: 11px;" face="Arial, Helvetica, sans-serif"><b>Total Compensation Package</b></font>
-                                            <div style='display:none; font-family: Arial, Helvetica, sans-serif;font-size:10px; font-family: Arial, Helvetica, sans-serif; color:#FFFFFF'>(Your Base Pay and {{$company['company_designation']}}-Paid Benefits)</div>
+                                            <div style='display:none; font-family: Arial, Helvetica, sans-serif;font-size:10px; font-family: Arial, Helvetica, sans-serif; color:#FFFFFF'>(Your Base Pay and {{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}-Paid Benefits)</div>
                                         </td>
                                     </tr>
                                 </table>
@@ -957,7 +952,7 @@
                                                             </tr>
                                                             <tr align="center" valign="middle" style="color:#CC0000;">
                                                                 <td>
-                                                                    <div style="font-size:7pt;line-height:1;font-family: Arial, Helvetica, sans-serif;color:#2E0854;">{{$company['company_designation']}}-Paid Benefits/Cash</div>
+                                                                    <div style="font-size:7pt;line-height:1;font-family: Arial, Helvetica, sans-serif;color:#2E0854;">{{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}-Paid Benefits/Cash</div>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -1015,7 +1010,7 @@
                                                     </td>
                                                     <td width="4%">&nbsp;</td>
                                                     <td align="left" width="82%" style="font-size:6.5pt;font-family: Arial, Helvetica, sans-serif;"><b>Your
-                                                            {{$company['company_designation']}}-Paid Benefits and Cash represent <br />
+                                                            {{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}-Paid Benefits and Cash represent <br />
                                                             <b style="color:#CC0000;">an additional {{ !empty( $tcp_percent ) ? number_format($tcp_percent, 2, '.', ',') : 0}}%</b> of
                                                             Your Base Pay!</b> </td>
                                                 </tr>
@@ -1114,8 +1109,12 @@
                     <tbody>
                         <tr>
                             <td width="120" style="font-family: Arial, Helvetica, sans-serif;font-size:10px;font-weight:bold; ">Benefits</td>
-                            <td width="90" style="font-family: Arial, Helvetica, sans-serif;text-align:center;font-size:10px;font-weight:bold;text-align:left;">{{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}<br>Contribution</td>
-                            <td style="font-family: Arial, Helvetica, sans-serif;text-align:center;font-size:10px;font-weight:bold">Your<br>Contribution</td>
+                            @if($_exclude_emp != 1)
+                                <td width="90" style="font-family: Arial, Helvetica, sans-serif;text-align:center;font-size:10px;font-weight:bold;text-align:left;">{{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}<br>Contribution</td>
+                                <td style="font-family: Arial, Helvetica, sans-serif;text-align:center;font-size:10px;font-weight:bold">Your<br>Contribution</td>
+                            @else
+                                <td width="90" style="font-family: Arial, Helvetica, sans-serif;text-align:right;font-size:10px;font-weight:bold;">{{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}<br>Contribution</td>
+                            @endif
                         </tr>
                     </tbody>
                 </table>
@@ -1132,13 +1131,15 @@
                             <tr style="background-color: <?php echo $benefits['color']?>;">
                                 <td class="ellips-text" style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;font-family: Arial, Helvetica, sans-serif;font-size: 9px;">{!! $benefits['heading'] !!}</td>
                                 <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;">{!! (! empty($benefits['employer_default_value']) && $benefits['employer_default_value'] > 0 ) ? $benefits['symbol'] . '' .$benefits['employer_default_value'] : '--' !!}</span></td>
-                                <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;vertical-align: middle;">
-                                    <div style="vertical-align: middle;border:1px solid #000; height: 8px;display: inline-block;margin-right:2px;width: 50px;">
-                                        <span style="background: {{$company['color2']}}; width:{{($upper1 / ( ! empty($lower1) ? $lower1 : 1 ))}}%;display: inline-block;height: 8px;float: left;"></span>
-                                        <span style="background: {{$company['color1']}}; width:{{( $upper2/ ( ! empty($lower2) ? $lower2 : 1 ))}}%;display: inline-block;height: 8px;float: right;"></span>
-                                    </div>
-                                </td>
-                                <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;"><span>{!! (! empty($benefits['employee_default_value']) && $benefits['employee_default_value'] > 0 ) ? $benefits['symbol'] . '' .$benefits['employee_default_value'] : '--' !!}</span></td>
+                                @if($_exclude_emp != 1)
+                                    <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;vertical-align: middle;">
+                                        <div style="vertical-align: middle;border:1px solid #000; height: 8px;display: inline-block;margin-right:2px;width: 50px;">
+                                            <span style="background: {{$company['color2']}}; width:{{($upper1 / ( ! empty($lower1) ? $lower1 : 1 ))}}%;display: inline-block;height: 8px;float: left;"></span>
+                                            <span style="background: {{$company['color1']}}; width:{{( $upper2/ ( ! empty($lower2) ? $lower2 : 1 ))}}%;display: inline-block;height: 8px;float: right;"></span>
+                                        </div>
+                                    </td>
+                                    <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;"><span>{!! (! empty($benefits['employee_default_value']) && $benefits['employee_default_value'] > 0 ) ? $benefits['symbol'] . '' .$benefits['employee_default_value'] : '--' !!}</span></td>
+                                @endif
                             </tr>
                             @endforeach
                             @if(count($right_rows['employer']) < 34)
@@ -1151,6 +1152,7 @@
                                         @endif
                                         </strong></td>
                                     <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;"><strong>{{$company['currency_symbol']}} {{number_format($right_side_employer,0, '.', ',')}}</strong></td>
+                                    @if($_exclude_emp != 1)
                                     <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;vertical-align: middle;">
                                         {{-- <!-- <span><strong>{{$company['currency_symbol']}}</strong></span> --> --}}
                                         <div style="vertical-align: middle;border:1px solid #000; height: 8px;display: inline-block;margin-right:2px;width: 50px;">
@@ -1161,6 +1163,7 @@
                                     <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;">
                                         <strong>${{number_format($right_side_employee ,0, '.', ',')}}</strong>
                                     </td>
+                                    @endif
                                 </tr>
                             @endif
                         @endif
@@ -1168,7 +1171,7 @@
                 </table>
             </div>
 
-            @if( ! empty($chunked_array_right) && isset($chunked_array_right[0]) && count($chunked_array_right[0]) <= 29) 
+            @if( ! empty($chunked_array_right) && isset($chunked_array_right[0]) && count($chunked_array_right[0]) <= 29 && $_exclude_emp != 1 ) 
                 <div style="width:100%;">
                     <table style="width:100%; margin-bottom:0px;margin-left: auto;margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
@@ -1192,7 +1195,7 @@
                                                                     </td>
                                                                     <td width="5%">&nbsp;</td>
                                                                     <td align="left" width="80%" style="font-size:6.5pt;font-family: Arial, Helvetica, sans-serif;"><b>Your
-                                                                            {{$company['company_designation']}}-Paid Benefits represent <b style="color:#CC0000;">{{! empty($cpb_percent) ? $cpb_percent : 0}}%</b><br />
+                                                                            {{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}-Paid Benefits represent <b style="color:#CC0000;">{{! empty($cpb_percent) ? $cpb_percent : 0}}%</b><br />
                                                                             of your Total Benefits!</b> </td>
                                                                 </tr>
                                                             </table>
@@ -1255,7 +1258,7 @@
         <section style="width: 2%; float: left;"></section>
 
         <section class="cp-table-continer" style="width:49%;float: right;">
-            @if(count($right_rows['employer']) > 29 && count($right_rows['employer']) < 34)
+            @if(count($right_rows['employer']) > 29 && count($right_rows['employer']) < 34 && $_exclude_emp != 1 )
                 <div style="width:100%;">
                     <table style="width:100%; margin-bottom:0px;margin-left: auto;margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
@@ -1279,7 +1282,7 @@
                                                                     </td>
                                                                     <td width="5%">&nbsp;</td>
                                                                     <td align="left" width="80%" style="font-size:6.5pt;font-family: Arial, Helvetica, sans-serif;"><b>Your
-                                                                            {{$company['company_designation']}}-Paid Benefits represent <b style="color:#CC0000;">{{! empty($cpb_percent) ? $cpb_percent : 0}}%</b><br />
+                                                                            {{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}-Paid Benefits represent <b style="color:#CC0000;">{{! empty($cpb_percent) ? $cpb_percent : 0}}%</b><br />
                                                                             of your Total Benefits!</b> </td>
                                                                 </tr>
                                                             </table>
@@ -1301,8 +1304,12 @@
                         <tbody>
                             <tr>
                                 <td width="120" style="font-family: Arial, Helvetica, sans-serif;font-size:10px;font-weight:bold; ">Benefits</td>
-                                <td width="90" style="font-family: Arial, Helvetica, sans-serif;text-align:center;font-size:10px;font-weight:bold;text-align:left;">Company<br>Contribution</td>
-                                <td style="font-family: Arial, Helvetica, sans-serif;text-align:center;font-size:10px;font-weight:bold">Your<br>Contribution</td>
+                                @if($_exclude_emp != 1)
+                                    <td width="90" style="font-family: Arial, Helvetica, sans-serif;text-align:center;font-size:10px;font-weight:bold;text-align:left;">Company<br>Contribution</td>
+                                    <td style="font-family: Arial, Helvetica, sans-serif;text-align:center;font-size:10px;font-weight:bold">Your<br>Contribution</td>
+                                @else
+                                    <td style="font-family: Arial, Helvetica, sans-serif;text-align:right;font-size:10px;font-weight:bold">Your<br>Contribution</td>
+                                @endif
                             </tr>
                         </tbody>
                     </table>
@@ -1320,14 +1327,16 @@
                                     <tr style="background-color: <?php echo $benefits['color']?>;">
                                         <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;font-family: Arial, Helvetica, sans-serif;font-size: 9px;">{!! $benefits['heading'] !!}</td>
                                         <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;"><span>{{(! empty($benefits['employer_default_value']) && $benefits['employer_default_value'] > 0 ) ? $benefits['symbol'] . '' .$benefits['employer_default_value'] : '--' }}</span></td>
-                                        <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;vertical-align: middle;">
-                                            <span>{{$company['currency_symbol']}}</span>
-                                            <div style="vertical-align: middle;border:1px solid #000; height: 8px;display: inline-block;margin-right:2px;width: 50px;">
-                                                <span style="background: #ff1100; width:{{($upper1 / ( ! empty($lower1) ? $lower1 : 1 ))}}%;display: inline-block;height: 8px;float: left;"></span>
-                                                <span style="background: #ffeb00; width:{{( $upper2/ ( ! empty($lower2) ? $lower2 : 1 ))}}%;display: inline-block;height: 8px;float: right;"></span>
-                                            </div>
-                                        </td>
-                                        <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;"><span>{{(! empty($benefits['employee_default_value']) && $benefits['employee_default_value'] > 0 ) ? $benefits['symbol'] . '' .$benefits['employee_default_value'] : '--' }}</span></td>
+                                        @if($_exclude_emp != 1)
+                                            <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;vertical-align: middle;">
+                                                <span>{{$company['currency_symbol']}}</span>
+                                                <div style="vertical-align: middle;border:1px solid #000; height: 8px;display: inline-block;margin-right:2px;width: 50px;">
+                                                    <span style="background: #ff1100; width:{{($upper1 / ( ! empty($lower1) ? $lower1 : 1 ))}}%;display: inline-block;height: 8px;float: left;"></span>
+                                                    <span style="background: #ffeb00; width:{{( $upper2/ ( ! empty($lower2) ? $lower2 : 1 ))}}%;display: inline-block;height: 8px;float: right;"></span>
+                                                </div>
+                                            </td>
+                                            <td style="padding:2px 5px;border-top: 1px solid #000;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;"><span>{{(! empty($benefits['employee_default_value']) && $benefits['employee_default_value'] > 0 ) ? $benefits['symbol'] . '' .$benefits['employee_default_value'] : '--' }}</span></td>
+                                        @endif
                                     </tr>
                                     @endforeach
                                 @endif
@@ -1339,17 +1348,19 @@
                                         @else
                                             Benefits Total
                                         @endif</strong></td>
-                                        <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;"><strong>{{$company['currency_symbol']}} {{number_format($right_side_employer,0, '.', ',')}}</strong></td>
-                                        <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;vertical-align: middle;">
-                                            <span><strong>{{$company['currency_symbol']}}</strong></span>
-                                            <div style="vertical-align: middle;border:1px solid #000; height: 8px;display: inline-block;margin-right:2px;width: 50px;">
-                                                <span style="background:#ff1100; width:{{(($right_side_employer * 100) / ( $right_left_total))}}%;display: inline-block;height: 8px;float: left;"></span>
-                                                <span style="background: #ffeb00; width:{{(($right_side_employee * 100) / ( $right_left_total))}}%;display: inline-block;height: 8px;float: right;"></span>
-                                            </div>
-                                        </td>
-                                        <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;">
-                                            <strong>${{number_format($right_side_employee ,0, '.', ',')}}</strong>
-                                        </td>
+                                            <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;"><strong>{{$company['currency_symbol']}} {{number_format($right_side_employer,0, '.', ',')}}</strong></td>
+                                            @if($_exclude_emp != 1)
+                                            <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;vertical-align: middle;">
+                                                <span><strong>{{$company['currency_symbol']}}</strong></span>
+                                                <div style="vertical-align: middle;border:1px solid #000; height: 8px;display: inline-block;margin-right:2px;width: 50px;">
+                                                    <span style="background:#ff1100; width:{{(($right_side_employer * 100) / ( $right_left_total))}}%;display: inline-block;height: 8px;float: left;"></span>
+                                                    <span style="background: #ffeb00; width:{{(($right_side_employee * 100) / ( $right_left_total))}}%;display: inline-block;height: 8px;float: right;"></span>
+                                                </div>
+                                            </td>
+                                            <td style="padding:2px 5px;border-bottom: 1px solid #000;text-align: right;font-family: Arial, Helvetica, sans-serif;font-size: 9px;">
+                                                <strong>${{number_format($right_side_employee ,0, '.', ',')}}</strong>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endif
                             @endfor
@@ -1357,7 +1368,7 @@
                     </table>
                 </div>
             @endif
-            @if(count($chunked_array_right) > 1)
+            @if(count($chunked_array_right) > 1 && $_exclude_emp != 1 )
                 <div style="width:100%;">
                     <table style="width:100%; margin-bottom:0px;margin-left: auto;margin-right: auto;" border="0" cellpadding="0" cellspacing="0">
                         <tbody>
@@ -1381,7 +1392,7 @@
                                                                     </td>
                                                                     <td width="5%">&nbsp;</td>
                                                                     <td align="left" width="80%" style="font-size:6.5pt;font-family: Arial, Helvetica, sans-serif;"><b>Your
-                                                                            {{$company['company_designation']}}-Paid Benefits represent <b style="color:#CC0000;">{{! empty($cpb_percent) ? $cpb_percent : 0}}%</b><br />
+                                                                            {{!empty($company['company_designation']) ? $company['company_designation'] : 'Company'}}-Paid Benefits represent <b style="color:#CC0000;">{{! empty($cpb_percent) ? $cpb_percent : 0}}%</b><br />
                                                                             of your Total Benefits!</b> </td>
                                                                 </tr>
                                                             </table>

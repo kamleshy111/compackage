@@ -522,6 +522,22 @@ class SalesController extends Controller
                     $sale->resubscribed = 1;
                 }
                 $sale->save();
+
+                // Only update old rows if this sale is resubscribed
+                if ( $sale->resubscribed == 1 ) {
+
+                    Sales::where('user_id', $sale->user_id)
+                        ->where('id', '!=', $sale->id)
+                        ->update([
+                            'send_reminder_30' => 0,
+                            'send_reminder_15' => 0,
+                            'send_reminder_10' => 0,
+                            'send_reminder_5' => 0,
+                            'send_reminder_3' => 0,
+                            'send_reminder_1' => 0,
+                        ]);
+                }
+
                 $sales_transactions = SalesTransactions::where('sales_id', $request->sales_id)->first();
                 $sales_transactions->description = 'Successful';
                 $sales_transactions->save();

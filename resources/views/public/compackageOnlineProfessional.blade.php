@@ -12,7 +12,7 @@
                     <!-- <iframe class="w-full md:h-[420px] h-[300px]" id="player1" frameborder="0" allowfullscreen="1" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="Total Compensation Statements - Creating Total Benefit Reports: Compackage Online Professional" src="https://www.youtube.com/embed/9wnRNYYRHHQ?enablejsapi=1"></iframe> -->
                         <div class="w-full relative border-2 border-solid border-[#16612e]">
                             <div class="w-full relative p-[28.1%]">
-                                <iframe class="w-full h-full absolute block top-0 left-0 m-0" id="player1" frameborder="0" allowfullscreen="1" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="Total Compensation Statements - Creating Total Benefit Reports: Compackage Online Professional" src="https://www.youtube.com/embed/9wnRNYYRHHQ?enablejsapi=1&playlist=9wnRNYYRHHQ&loop=1&autoplay=0&controls=1&rel=0"></iframe>
+                                <iframe class="w-full h-full absolute block top-0 left-0 m-0" id="player1" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="Total Compensation Statements - Creating Total Benefit Reports: Compackage Online Professional" src="https://www.youtube.com/embed/9wnRNYYRHHQ?enablejsapi=1&playlist=9wnRNYYRHHQ&loop=1&autoplay=0&controls=1&rel=0"></iframe>
                             </div>
                         </div>
                     </div>

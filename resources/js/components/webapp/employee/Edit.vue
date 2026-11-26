@@ -7,7 +7,7 @@
                     <input
                         class="cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md"
                         type="submit" name="" value="Save" id="" />
-                    <a :href="url + '/create-report?employee_id='+employee.id"
+                    <a :href="url + '/create-report?employee_id='+employee.id+'&exclude_emp='+this.exclude_employee_contributions"
                         class="rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md" target="_blank">Create PDF Report</a>
                     <a href="javascript:void()" v-if="employee.is_digital_delivery" v-on:click="sendEmployeeALink"
                         class="rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md" target="_blank">Send Employee a Link</a>
@@ -73,6 +73,17 @@
                             <div>Allow Digital Delivery</div>
                             <div class="relative ml-3">
                                 <input type="checkbox" id="toggleC" v-model="employee.is_digital_delivery" class="sr-only">
+                                <div class="block bg-gray-600 w-8 h-5 rounded-full"></div>
+                                <div class="dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition"></div>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="w-full mb-3 mb-3">
+                        <label for="toggleD" class="flex items-center cursor-pointer">
+                            <div>Include Middle Wages Top Box Score?</div>
+                            <div class="relative ml-3">
+                                <input type="checkbox" id="toggleD" v-model="employee.is_middle_wages_top_box" class="sr-only">
                                 <div class="block bg-gray-600 w-8 h-5 rounded-full"></div>
                                 <div class="dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition"></div>
                             </div>
@@ -206,7 +217,6 @@
                             'Disability leave'</p>
                     </div>
                 </div>
-
                 <div class="mt-8">
                     <div class="relative overflow-x-auto md:overflow-visible">
                         <div v-for="(benefit_type, benefit_type_index) in benefit_types" :key="benefit_type" class="mt-8">
@@ -831,7 +841,7 @@
                     <input
                         class="cursor-pointer rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md"
                         type="submit" name="" value="Save" id="" />
-                    <a :href="url + '/create-report?employee_id='+employee.id" target="_blank" class="rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md">Create PDF Report</a>
+                    <a :href="url + '/create-report?employee_id='+employee.id+'&exclude_emp='+this.exclude_employee_contributions" target="_blank" class="rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md">Create PDF Report</a>
                     <a href="#" v-if="employee.is_digital_delivery" v-on:click="sendEmployeeALink"
                         class="rounded px-3 py-1.5 leading-4 text-center hover:greenback gradient-green text-white font-sans font-bold text-md" target="_blank">Send Employee a Link</a>
                 </div>
@@ -842,11 +852,8 @@
             <img :src="url + '/images/com-loader.gif'" alt=""
                 class="loader-img top-[50%] left-[50%] absolute -translate-y-[50%] -translate-x-[50%]">
         </div>
-
-
     </form>
 </template>
-
 <script>
 import Sortable from 'sortablejs';
 export default {
@@ -896,6 +903,7 @@ export default {
                 is_company_benefit: '',
                 email: '',
                 phone: '',
+                is_middle_wages_top_box: '',
             },
             benefits_from: 'employee',
             benefits_to_be_deleted: [],
@@ -931,6 +939,7 @@ export default {
             S_25_EmployeePPC: '',
             Var_CalcForm_VI_HideHelp: '',
             notifyNoAutoRecalc: false,
+            exclude_employee_contributions: 'false'
         }
     },
     created() {
@@ -938,6 +947,7 @@ export default {
             this.edit_employee.is_digital_delivery = this.edit_employee.is_digital_delivery ? true : false;
             this.edit_employee.inactive = this.edit_employee.inactive ? true : false;
             this.edit_employee.hourly_pay_functionality = this.edit_employee.hourly_pay_functionality ? true : false;
+            this.edit_employee.is_middle_wages_top_box = this.edit_employee.is_middle_wages_top_box ? true : false;
             this.employee = this.edit_employee;
         }
         this.getBenefitsTypes();
@@ -951,7 +961,11 @@ export default {
 
         this.Var_CalcForm_HI_Census = this.health_census;
         this.Var_CalcForm_DI_Census = this.dental_census;
-        this.Var_CalcForm_VI_Census = this.vision_census
+        this.Var_CalcForm_VI_Census = this.vision_census;
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('exclude_emp')) {
+            this.exclude_employee_contributions = urlParams.get('exclude_emp');
+        }
     },
     methods: {
         filladdress() {
@@ -1145,30 +1159,30 @@ export default {
                 alert('IMPORTANT: After using the COMPackage calculators, please note that the values will NOT be automatically recalculated if you change the data in any of the Base Pay or Other Income fields.');
                 this.notifyNoAutoRecalc = true;
             }
-            
+            console.log('123456789000000000000000ss0');
             var wages = this.getWages();
             switch ( id + '') {
                 // DONE: Social Security case '31':
                 case '7': // 07
                     var tempSS_wages = wages;
-                    var tempSS_year = 132900;
+                    var tempSS_year = 168600;
                     var tempSS_rate_employee = 0.062;
                     var tempSS_rate_employer = 0.062;
 
-                    if ( jQuery(".year_type:checked").val() == 'C' ) {
-                        tempSS_year             = this.social_security.social_security_this_year;
-                        tempSS_rate_employee    = this.social_security.social_security_this_year_rate_employee;
-                        tempSS_rate_employer    = this.social_security.social_security_this_year_rate_employer;
-                    } else {
-                        tempSS_year             = this.social_security.social_security_last_year;
-                        tempSS_rate_employee    = this.social_security.social_security_last_year_rate_employee;
-                        tempSS_rate_employer    = this.social_security.social_security_last_year_rate_employer;
-                    }
+                    //if ( jQuery(".year_type:checked").val() == 'C' ) {
+                    //    tempSS_year             = this.social_security.social_security_this_year;
+                    //    tempSS_rate_employee    = this.social_security.social_security_this_year_rate_employee;
+                    //    tempSS_rate_employer    = this.social_security.social_security_this_year_rate_employer;
+                    //} else {
+                   //     tempSS_year             = this.social_security.social_security_last_year;
+                   //     tempSS_rate_employee    = this.social_security.social_security_last_year_rate_employee;
+                    //    tempSS_rate_employer    = this.social_security.social_security_last_year_rate_employer;
+                   // }
 
                     if (tempSS_wages > tempSS_year) tempSS_wages = tempSS_year;
-                    
                     this.setBenefitValues(benefit_type_index, benefit_index, 'employer', nf(tempSS_wages * tempSS_rate_employer));
                     this.setBenefitValues(benefit_type_index, benefit_index, 'employee', nf(tempSS_wages * tempSS_rate_employee));
+                    
                 break;
                 
                 // DONE: Medicare case '32':
@@ -1191,6 +1205,7 @@ export default {
             }
         },
         getWages() {
+            console.log('000000DWS0000000Karwa');
             var wages = 0;
             var tempNum = 0;
             var tempStr = '';
@@ -1209,31 +1224,118 @@ export default {
         getTotal( key = '' ) {
             var total_pay = 0;
             var total_wages = 0;
-
             for( let benefit_type_t of this.benefit_types ) {
                 for( let benefit_t of benefit_type_t.benefits) {
+                    /*Pay and Other Income Start*/
+                    if( this.edit_employee.hourly_pay_functionality == false && benefit_t && benefit_t.name == 'Salary' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                        total_pay = total_pay + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( this.edit_employee.hourly_pay_functionality == false && benefit_t && benefit_t.name == 'Hourly Wages' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                        total_pay = total_pay + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( this.edit_employee.hourly_pay_functionality == false && benefit_t && benefit_t.name == 'Overtime' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    /*Pay and Other Income END*/
 
-                    if( benefit_t && benefit_t.name == 'Salary' ) {
-                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
-                        total_pay = total_pay + parseFloat(benefit_t.employer_default_value);
-                    }
-                    if( benefit_t && benefit_t.name == 'Hourly Wages' ) {
-                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
-                        total_pay = total_pay + parseFloat(benefit_t.employer_default_value);
-                    }
-                    if( benefit_t && benefit_t.name == 'Overtime' ) {
+                    /*COMMON START*/
+                    if( benefit_t && benefit_t.name == 'Performance Bonus' ) {
                         total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
                     }
-                    if( benefit_t && benefit_t.name == 'Holiday Bonus' ) {
+                    if( benefit_t && benefit_t.name == 'Annual Incentive' ) {
                         total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
                     }
                     if( benefit_t && benefit_t.name == 'Annual Bonus' ) {
                         total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
                     }
-                    if( benefit_t && benefit_t.name == 'Performance Bonus' ) {
+                    if( benefit_t && benefit_t.name == 'Holiday Bonus' ) {
                         total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
                     }
-
+                    if( benefit_t && benefit_t.name == 'Draw' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Commissions' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Health Insurance Opt Out Pay' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Bereavement Time Off' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Vacation Paid, not taken' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Unused Sick Time' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Long Term Incentive' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Short Term Incentive' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Sunday Incentive' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Trainer Incentive' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Field Sales Incentive' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Sign-on Bonus' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Referral Bonus' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Market Differential' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Mid Shift Premium' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'On Call Service' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Night Service' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Shift Differential' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Garnishment Reimbursement' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Vaccination Validation Bonus' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'COVID-19 Supplemental Pay' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Military Active Duty' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Short Term Disability Pay' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( benefit_t && benefit_t.name == 'Jury Duty' ) {
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    /*COMMON END*/
+                    
+                    /*Hourly Pay Functionality END*/
+                    if( this.edit_employee.hourly_pay_functionality == true && benefit_t && benefit_t.name == 'Regular Hours Total'){
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                        total_pay = total_pay + parseFloat(benefit_t.employer_default_value);
+                    }
+                    if( this.edit_employee.hourly_pay_functionality == true && benefit_t && benefit_t.name == 'Overtime Total'){
+                        total_wages = total_wages + parseFloat(benefit_t.employer_default_value);
+                    }
+                    /*Hourly Pay Functionality END*/
                 }
             }
 

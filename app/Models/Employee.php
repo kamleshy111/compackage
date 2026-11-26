@@ -43,6 +43,7 @@ class Employee extends Model
             $this->inactive = $request->employee['inactive'];
             $this->hourly_pay_functionality = ! empty($request->employee['hourly_pay_functionality']) ? true : false;
             $this->is_digital_delivery = (! empty($request->employee) && ! empty($request->employee['is_digital_delivery'])) ? 1 : 0;
+            $this->is_middle_wages_top_box = (! empty($request->employee) && ! empty($request->employee['is_middle_wages_top_box'])) ? 1 : 0;
             $this->digital_delivery_value = (! empty($request->employee) && ! empty($request->employee['digital_delivery_value'])) ? $request->employee['digital_delivery_value'] : '';
             $this->supervisor = (! empty($request->employee) && ! empty($request->employee['supervisor'])) ? $request->employee['supervisor'] : '';
             
@@ -209,6 +210,7 @@ class Employee extends Model
             $this->group = $data['group'];
             $this->supervisor = ! empty($data['supervisor']) ? $data['supervisor'] : '';
             $this->is_digital_delivery = ! empty($data['is_digital_delivery']) ? 1 : 0;
+            $this->is_middle_wages_top_box = ! empty($data['is_middle_wages_top_box']) ? 1 : 0;
             $this->digital_delivery_value = ! empty($data['digital_delivery_value']) ? $data['digital_delivery_value'] : 0;
             $this->mid_year_event = ! empty($data['mid_year_event']) ? $data['mid_year_event'] : '';
             $this->inactive = ! empty($data['inactive']) ? $data['inactive'] : 0;

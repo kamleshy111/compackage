@@ -52,6 +52,11 @@
                 </div>
 
                 <div class="w-full mb-3 mb-3">
+                    <label class="mb-1 mr-2">Include Middle Wages Top Box Score?</label>
+                    <input type="checkbox" v-model="employee.is_middle_wages_top_box" value="1">
+                </div>
+
+                <div class="w-full mb-3 mb-3">
                     <label class="mb-1">Supervisor</label>
                     <input name="supervisor" type="text" v-model="employee.supervisor"
                         class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
@@ -195,6 +200,7 @@ export default {
                 inactive: '',
                 hourly_pay_functionality: '',
                 is_digital_delivery: '',
+                is_middle_wages_top_box: '',
                 supervisor: '',
                 address_line_1: '',
                 address_line_2: '',

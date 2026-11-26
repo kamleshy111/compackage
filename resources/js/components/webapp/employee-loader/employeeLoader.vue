@@ -149,6 +149,12 @@
                     </div>
                     <div class="mt-4 flex flex-wrap -m-2.5">
                         <div class="lg:w-1/2 w-full px-2.5">
+                            <label class="mb-1">Include Middle Wages Top Box Score</label>
+                            <input type="text" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full mb-3 form-control" v-model="record['Include Middle Wages Top Box Score']" />
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-wrap -m-2.5">
+                        <div class="lg:w-1/2 w-full px-2.5">
                             <label class="mb-1">Address Line 1</label>
                             <input type="text" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full mb-3 form-control" v-model="record['Address Line 1']" />
                         </div>
@@ -358,7 +364,7 @@ export default {
                 "group": "Group/Department",
                 "email": "Email",
                 "phone": "Phone",
-                "digital_delivery_value": 'Digital Delivery ID'
+                "digital_delivery_value": 'Digital Delivery ID',
             },
             columns_mapping: [],
             employeeRemove:[],
@@ -387,7 +393,7 @@ export default {
                 "Zip",
                 "Group/Department",
                 "Email",
-                "Phone"
+                "Phone",
             ]
         }
     },

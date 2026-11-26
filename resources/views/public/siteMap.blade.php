@@ -46,6 +46,7 @@
 								<li class="last"><a class="underline text-dgreenclr" href="{{route('productReviews')}}">Testimonials</a></li>
 							</ul>
 						</li>
+						<li><a class="underline text-dgreenclr" href="{{route('blog')}}">Blog</a></li>
 						<li><a class="text-dgreenclr">Connect</a>
                             <ul class="pl-5 list-disc text-dgreenclr">
 								<li class="first"><a class="underline text-dgreenclr" href="http://www.linkedin.com/in/joeblattner" target="_blank">Stay in Touch Through Linked In</a></li>

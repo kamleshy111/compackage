@@ -61,7 +61,9 @@ acquired Licensor may terminate this License Agreement upon the breach by you of
         </table>
       </div>
     </div>
-    <div class="text-xs text-black">* Additional reports available at $20 each.</div>
+    <div class="text-xs text-black">* All licensees must be real identifiable persons, and not anonymous or fictitious.</div>
+    <div class="text-xs text-black">** Any introductory coupon offers for 5 reports are only for one-time trial purchase.</div>
+
     <div class="mt-7">
       <p class="pb-3 font-serif text-xs text-dgray">You will be presented with a link to access the program once your payment has been approved. The User Name and Password that you choose below will be used to access the program.</p>
       <a href="javascript:void(0)" v-on:click="PopupShow= true" class="hover:opacity-90 transition ease-in-out delay-150 inline-block outline-none cursor-pointer rounded-lg px-4 py-2 leading-4 text-center hover:lbrwnclr gradient-brown text-white font-sans font-bold text-sm">Read the User Agreement</a>
@@ -175,13 +177,13 @@ acquired Licensor may terminate this License Agreement upon the breach by you of
               </select>
             </div>
           </div>
-          <div class="w-full mb-3" v-if="form.additional_report_disable">
+          <!--<div class="w-full mb-3" v-if="form.additional_report_disable">
             <label class="mb-1" for="reportsadditional">Additional Reports <span class="text-xs text-black">@ $20.00
                 each</span></label>
             <input type="number" name="additional_report" size="2" @input="AdditionalInputChange" v-model="form.additional_report"
               class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
             <span class="text-xs text-black">Prices are listed in U.S. Dollars.</span>
-          </div>
+          </div>-->
           <div class="w-full mb-3">
             <label class="mb-1" for="coupon_code">Coupon code</label>
             <input type="text" name="coupon_code" id="coupon_code" size="2" v-model="form.coupon_code" class="focus:border-lbrwnclr outline-0 border border-neutral-400 h-7 px-2.5 rounded bg-neutral-100 w-full form-control" />
@@ -482,8 +484,8 @@ acquired Licensor may terminate this License Agreement upon the breach by you of
             payment_method: {
                 card: card,
                 billing_details: {
-                name: app.firstname + ' ' + app.lastname,
-                email: app.email
+                name: app.form.firstname + ' ' + app.form.lastname,
+                email: app.form.email
                 },
             },
         })

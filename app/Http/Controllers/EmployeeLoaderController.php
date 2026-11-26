@@ -176,8 +176,20 @@ class EmployeeLoaderController extends Controller
         } */
 
         $headings = $csv->csvHeadings();
+         $headings = array_map('trim', $headings);
         $csvRows = $csv->csvSlice(1, 100000);
+        foreach ($csvRows as &$object) {
+            $object = (array) $object; // Convert stdClass object to array
+            $trimmedArray = [];
 
+            foreach ($object as $key => $value) {
+                $trimmedKey = trim($key); // Trim whitespace from key
+                $trimmedArray[$trimmedKey] = $value; // Add trimmed key and value to new array
+            }
+
+            $object = (object) $trimmedArray; // Convert array back to stdClass object
+        }
+        
         $stringColms = [
             'first name',
             "middle name",
@@ -321,6 +333,7 @@ class EmployeeLoaderController extends Controller
                         "supervisor"                => ! empty($csv_record['Supervisor'])? trim($csv_record['Supervisor']): '',
                         "employee_id"               => ! empty($csv_record['Employee ID'])? trim($csv_record['Employee ID']): '',
                         "is_digital_delivery"       => ! empty($csv_record['Digital Delivery'])? trim($csv_record['Digital Delivery']): 0,
+                        "is_middle_wages_top_box"       => ! empty($csv_record['Include Middle Wages Top Box Score'])? trim($csv_record['Include Middle Wages Top Box Score']): 0,
                         "digital_delivery_value"    => ! empty($csv_record['Digital Delivery ID'])? trim($csv_record['Digital Delivery ID']): 0,
                         "city"                      => ! empty($csv_record['City'])? trim($csv_record['City']): '',
                         "state"                     => ! empty($csv_record['State'])? trim($csv_record['State']): '',

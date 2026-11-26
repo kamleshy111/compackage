@@ -66,7 +66,7 @@ class SalesReportingController extends Controller
                     $user->select('email', 'firstname', 'lastname', 'username', 'phone', 'id', DB::raw('DATEDIFF(CURDATE(), created_at)/365 AS year_difference'));
                 },
                 'user.companies' => function($user_company) {
-                    $user_company->select( 'name', 'telephone', 'phone_ext', 'industry', 'reports_left', 'reportsadditional', DB::raw('reportspackage + reportsadditional - reports_left AS reportsprocessed'), 'signup_date', 'aflac', 'reports_expire' ); // 'testng'
+                    $user_company->select( 'name', 'telephone', 'phone_ext', 'industry', 'reports_left', 'reportsadditional', DB::raw('reportspackage + reportsadditional - reports_left AS reportsprocessed'), 'signup_date', 'aflac', 'reports_expire' )->orderBy('signup_date', 'desc')->withCount('employees'); // 'testng'
                 },
                 // 'plans' => fn($plan) => $plan->with('years')
             ]);
@@ -138,18 +138,23 @@ class SalesReportingController extends Controller
         }
         //dd($transactions);
        
+       
+
         $all_transactions = [];
+        //dd( $transactions );
         foreach( $transactions as $key => $transaction ) {
             if( ! empty( $transaction['user'] ) ) {
                 $transaction['user']['user_id'] = $transaction['user']['id'];
                 $transaction['user']['user_name'] = $transaction['user']['firstname'] . ' ' . $transaction['user']['lastname'];
-                
+                //$companyCount = Company::where('company_owner', $transaction['user']['id'])->count();
+                //$all_transactions[$key]['company_count'] = $companyCount;
                 unset($transaction['user']['id']);
                 $all_transactions[$key] = array_merge($transaction, $transaction['transactions'], $transaction['transactions_status'], $transaction['user']);
                 
                 if( ! empty( $transaction['user']) && ! empty( $transaction['user']['companies'] ) ) {
                     
                     foreach($transaction['user']['companies'][0] as $key1 => $field) {
+                        
                         if( $key1 == 'industry' ) {
                             if( is_numeric( $field ) ) {
                                 $all_transactions[$key]['company_' . $key1] = $this->industries[$field];
@@ -158,17 +163,22 @@ class SalesReportingController extends Controller
                             }
                         } else if( $key1 == 'reports_expire' ) {
                             $all_transactions[$key]['company_' . $key1] = $field;
+                        } else if( $key1 == 'employees_count' ) {
+                            $all_transactions[$key]['company_' . $key1] = $field;
                         } else {
                             $all_transactions[$key]['company_' . $key1] = $field;
                         }
+
                     }
                 }
+                $all_transactions[$key]['companies_count'] = count( $all_transactions[$key]['companies'] );
                 unset($all_transactions[$key]['transactions']);
                 unset($all_transactions[$key]['transactions_status']);
                 unset($all_transactions[$key]['user']);
                 unset($all_transactions[$key]['companies']);
             }
         }
+        
 
         foreach( $all_transactions as $kk => $tt ) {
             $all_transactions[$kk]['created_at'] = strtotime($tt['created_at']);
@@ -209,8 +219,11 @@ class SalesReportingController extends Controller
                 }
             }    
         }
-   
+        //$all_transactions['dave_data'] = 'Com-Dave';
         $all_transactions = array_values($all_transactions);
+        // echo "</pre>";
+        // print_r( $all_transactions );
+        // echo "<pre>";
         foreach( $all_transactions as $kk => $tt ) {
             $all_transactions[$kk]['created_at'] = date("m/d/Y h:i:s A", $tt['created_at']);
             if( isset($tt['company_reports_expire']) && isset( $tt['company_signup_date'] ) ) {
@@ -220,12 +233,14 @@ class SalesReportingController extends Controller
                 $all_transactions[$kk]['license_packages'] = ( (Int) $temp_license_packages < 1 ) ? 1 : $temp_license_packages;
                 if( ! empty( $tt['plans'] ) ) {
                     $all_transactions[$kk]['years'] = (array)DB::table('membership_plan_years')->where('allowed_reports', $tt['plans']['allowed_reports'])->where('plan_id', $tt['plans']['id'] )->first();
+                    //$all_transactions[$kk]['years'] = (array)DB::table('membership_plan_years')->where('allowed_reports', $tt['plans']['allowed_reports'])->where('year', $tt['plans']['plan_for'])->where('plan_id', $tt['plans']['id'] )->first();
                     $all_transactions[$kk]['plan_years'] = (array)DB::table('membership_plan_years')->where('id', $tt['plan_year_id'])->first();
+                    //$all_transactions[$kk]['plan_years'] = (array)DB::table('membership_plan_years')->where('allowed_reports', $tt['plans']['allowed_reports'])->where('year', $tt['plans']['plan_for'])->where('plan_id', $tt['plans']['id'] )->first();;
                 }
             }
         }
         
-        return send_success(["transactions" => $all_transactions]);
+        return send_success(["transactions" => $all_transactions,'temp'=> 'dws']);
     }
 
     public function industries() {

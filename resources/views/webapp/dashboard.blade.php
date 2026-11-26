@@ -9,10 +9,10 @@
         $user = auth()->user();
         if( ! empty($user) ) {
           if( $user->user_role == 2 ) {
-            if( ! empty(request()->session()->get('user_permissions')['reports'] >= 10000) ) {
-              echo 'Unlimited Version Dashboard';
-            } else {
+            if( ! empty(request()->session()->get('user_permissions')['reports'] > 10000) ) {
               echo 'Professional Version Dashboard';
+            } else {
+              echo 'Unlimited Version Dashboard';
             }
           } else if( $user->user_role == 3 ) {
             echo 'Standard Dashboard';
